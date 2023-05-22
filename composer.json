@@ -1,0 +1,41 @@
+{
+    "name": "jayrods/product-inventory",
+    "description": "Entry-level vacancy test example",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jaderson Rodrigues Ilidio",
+            "email": "jaderson.rodrigues@yahoo.com",
+            "homepage": "https://www.github.com/Jadersonrilidio"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "functions/dump_and_exit.php",
+            "functions/env.php"
+        ],
+        "psr-4": {
+            "Jayrods\\ProductInventory\\": "src/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "php-di/php-di": "^7.0"
+    },
+    "scripts": {
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "php -S localhost:8001 -t public/"
+        ],
+        "db:init": "php bin/db_init.php",
+        "db:init:procedure": "php bin/db_init_add_procedure.php",
+        "db:init:populate": "php bin/db_init_populate.php",
+        "db:make": "php bin/db_make_product.php",
+        "db:get": "php bin/db_get_product.php",
+        "db:init:all": [
+            "@db:init",
+            "@db:init:procedure",
+            "@db:init:populate"
+        ]
+    }
+}

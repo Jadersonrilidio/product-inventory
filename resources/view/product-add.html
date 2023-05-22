@@ -1,0 +1,443 @@
+<div id="app">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container mt-2">
+            <div>
+                <a class="navbar-brand" href="{{app-url}}/add-product">Product Add</a>
+            </div>
+
+            <div>
+                <div style="float:left; margin-right:20px">
+                    <button class="navbar-item btn btn-sm btn-primary" type="submit"
+                        v-on:click="submitProductForm">Save</button>
+                </div>
+
+                <div style="float:left; margin-right:20px">
+                    <a class="navbar-item btn btn-sm btn-danger" href="{{app-url}}/">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <hr>
+
+    <div class="container">
+
+        <div class="invalidClass text-center">
+            {{input-validation-error}}
+        </div>
+
+        <form id="product_form" action="{{app-url}}/add-product" method="POST">
+
+            <div class="row m-3">
+                <div class="col-sm-2">
+                    <label for="sku" class="col-form-label">SKU</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="sku" name="sku" class="form-control" required>
+                </div>
+
+                <div class="col-sm-6 invalidClass" v-show="inputs.sku.show">
+                    {{ inputs.sku.message }}
+                </div>
+            </div>
+
+            <div class="row m-3">
+                <div class="col-sm-2">
+                    <label for="name" class="col-form-label">Name</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+
+                <div class="col-sm-6 invalidClass" v-show="inputs.name.show">
+                    {{ inputs.name.message }}
+                </div>
+            </div>
+
+            <div class="row m-3">
+                <div class="col-sm-2">
+                    <label for="price" class="col-form-label">Price ($)</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="price" name="price" class="form-control" required>
+                </div>
+
+                <div class="col-sm-6 invalidClass" v-show="inputs.price.show">
+                    {{ inputs.price.message }}
+                </div>
+            </div>
+
+
+            <div class="row m-3 mt-5 mb-5">
+                <div class="col-sm-2">
+                    <label for="productType" class="col-form-label">Type Switcher</label>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-select" id="productType" name="type" v-model="productType" required>
+                        <option disabled> -- </option>
+                        <option id="DVD" value="DVD">DVD-disc</option>
+                        <option id="Book" value="Book">Book</option>
+                        <option id="Furniture" value="Furniture">Furniture</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-6 invalidClass" v-show="inputs.type.show">
+                    {{ inputs.type.message }}
+                </div>
+            </div>
+
+            <div style="height:300px">
+
+                <div v-if="productType == 'Furniture'">
+                    <div class="row m-3">
+                        <div class="col-sm-2">
+                            <label for="height" class="col-form-label">Height (CM)</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" id="height" name="height" class="form-control" required>
+                        </div>
+
+                        <div class="col-sm-6 invalidClass" v-show="inputs.height.show">
+                            {{ inputs.height.message }}
+                        </div>
+                    </div>
+
+                    <div class="row m-3">
+                        <div class="col-sm-2">
+                            <label for="width" class="col-form-label">Width (CM)</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" id="width" name="width" class="form-control" required>
+                        </div>
+
+                        <div class="col-sm-6 invalidClass" v-show="inputs.width.show">
+                            {{ inputs.width.message }}
+                        </div>
+                    </div>
+
+                    <div class="row m-3">
+                        <div class="col-sm-2">
+                            <label for="length" class="col-form-label">Length (CM)</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" id="length" name="length" class="form-control" required>
+                        </div>
+
+                        <div class="col-sm-6 invalidClass" v-show="inputs.length.show">
+                            {{ inputs.length.message }}
+                        </div>
+                    </div>
+
+                    <div class="row m-3 mt-5">
+                        <p>"Please provide dimensions in the format <b>HxWxL</b> in centimeters (cm)"</p>
+                    </div>
+                </div>
+
+                <div v-if="productType == 'DVD'">
+                    <div class="row m-3">
+                        <div class="col-sm-2">
+                            <label for="size" class="col-form-label">Size (MB)</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" id="size" name="size" class="form-control" required>
+                        </div>
+
+                        <div class="col-sm-6 invalidClass" v-show="inputs.size.show">
+                            {{ inputs.size.message }}
+                        </div>
+                    </div>
+
+                    <div class="row m-3 mt-5">
+                        <p>"Please provide DVD-disc size megabytes (MB)"</p>
+                    </div>
+                </div>
+
+                <div v-if="productType == 'Book'">
+                    <div class="row m-3">
+                        <div class="col-sm-2">
+                            <label for="weight" class="col-form-label">Weight (Kg)</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" id="weight" name="weight" class="form-control" required>
+                        </div>
+
+                        <div class="col-sm-6 invalidClass" v-show="inputs.weight.show">
+                            {{ inputs.weight.message }}
+                        </div>
+                    </div>
+
+                    <div class="row m-3 mt-5">
+                        <p>"Please provide Book weight in kilograms (Kg)"</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <hr>
+
+    <div>
+        <p class="text-center">Scandiweb Test assignment</p>
+    </div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                productType: null,
+                inputs: {
+                    sku: {
+                        show: false,
+                        message: ''
+                    },
+                    name: {
+                        show: false,
+                        message: ''
+                    },
+                    price: {
+                        show: false,
+                        message: ''
+                    },
+                    type: {
+                        show: false,
+                        message: ''
+                    },
+                    size: {
+                        show: false,
+                        message: ''
+                    },
+                    weight: {
+                        show: false,
+                        message: ''
+                    },
+                    height: {
+                        show: false,
+                        message: ''
+                    },
+                    width: {
+                        show: false,
+                        message: ''
+                    },
+                    length: {
+                        show: false,
+                        message: ''
+                    }
+                },
+                messages: {
+                    requiredData: 'Please, submit required data',
+                    invalidTypeData: 'Please, provide the data of indicated data'
+                }
+            }
+        },
+        methods: {
+            submitProductForm() {
+                this.resetErrorMessages();
+
+                if (this.validateFormInputs()) {
+                    document.getElementById('product_form').submit();
+                }
+            },
+            validateFormInputs() {
+                validSku = this.validateSku();
+                validName = this.validateName();
+                validPrice = this.validatePrice();
+                validType = this.validateType();
+                validSpecificAttributes = this.validateSpecificAttributes();
+
+                return validSku && validName && validPrice && validType && validSpecificAttributes;
+            },
+            validateSku() {
+                sku = document.getElementById('sku').value;
+
+                if (typeof sku == undefined || typeof sku == null || sku == '') {
+                    this.inputs.sku.show = true;
+                    this.inputs.sku.message = this.messages.requiredData;
+                    return false;
+                } else if (typeof sku != "string") {
+                    this.inputs.sku.show = true;
+                    this.inputs.sku.message = this.messages.invalidTypeData;
+                    return false;
+                }
+
+                return true;
+            },
+            validateName() {
+                name = document.getElementById('name').value;
+
+                if (typeof name == undefined || typeof name == null || name == '') {
+                    this.inputs.name.show = true;
+                    this.inputs.name.message = this.messages.requiredData;
+                    return false;
+                } else if (typeof name != "string") {
+                    this.inputs.name.show = true;
+                    this.inputs.name.message = this.messages.invalidTypeData;
+                    return false;
+                }
+
+                return true;
+            },
+            validatePrice() {
+                price = document.getElementById('price').value;
+
+                if (typeof price == undefined || typeof price == null || price == '') {
+                    this.inputs.price.show = true;
+                    this.inputs.price.message = this.messages.requiredData;
+                    return false;
+                } else if (isNaN(price)) {
+                    this.inputs.price.show = true;
+                    this.inputs.price.message = this.messages.invalidTypeData;
+                    return false;
+                }
+
+                return true;
+            },
+            validateType() {
+                type = document.getElementById('productType').value;
+
+                if (typeof type == undefined || typeof type == null || type == '') {
+                    this.inputs.type.show = true;
+                    this.inputs.type.message = this.messages.requiredData;
+                    return false;
+                } else if (typeof type != "string") {
+                    this.inputs.type.show = true;
+                    this.inputs.type.message = this.messages.invalidTypeData;
+                    return false;
+                }
+
+                return true;
+            },
+            validateSpecificAttributes() {
+                type = document.getElementById('productType').value;
+
+                if (type == 'DVD') {
+                    return this.validateDVDAttributes();
+                }
+
+                if (type == 'Book') {
+                    return this.validateBookAttributes();
+                }
+
+                if (type == 'Furniture') {
+                    return this.validateFurnitureAttributes();
+                }
+
+                return false;
+            },
+            validateDVDAttributes() {
+                size = document.getElementById('size').value;
+
+                if (typeof size == undefined || typeof size == null || size == '') {
+                    this.inputs.size.show = true;
+                    this.inputs.size.message = this.messages.requiredData;
+                    return false;
+                } else if (isNaN(size)) {
+                    this.inputs.size.show = true;
+                    this.inputs.size.message = this.messages.invalidTypeData;
+                    return false;
+                }
+
+                return true;
+            },
+            validateBookAttributes() {
+                weight = document.getElementById('weight').value;
+
+                if (typeof weight == undefined || typeof weight == null || weight == '') {
+                    this.inputs.weight.show = true;
+                    this.inputs.weight.message = this.messages.requiredData;
+                    return false;
+                } else if (isNaN(weight)) {
+                    this.inputs.weight.show = true;
+                    this.inputs.weight.message = this.messages.invalidTypeData;
+                    return false;
+                }
+
+                return true;
+            },
+            validateFurnitureAttributes() {
+                validation = true;
+                height = document.getElementById('height').value;
+
+                if (typeof height == undefined || typeof height == null || height == '') {
+                    this.inputs.height.show = true;
+                    this.inputs.height.message = this.messages.requiredData;
+                    validation = false;
+                } else if (isNaN(height)) {
+                    this.inputs.height.show = true;
+                    this.inputs.height.message = this.messages.invalidTypeData;
+                    validation = false;
+                }
+
+                width = document.getElementById('width').value;
+
+                if (typeof width == undefined || typeof width == null || width == '') {
+                    this.inputs.width.show = true;
+                    this.inputs.width.message = this.messages.requiredData;
+                    validation = false;
+                } else if (isNaN(width)) {
+                    this.inputs.width.show = true;
+                    this.inputs.width.message = this.messages.invalidTypeData;
+                    validation = false;
+                }
+
+                length = document.getElementById('length').value;
+
+                if (typeof length == undefined || typeof length == null || length == '') {
+                    this.inputs.length.show = true;
+                    this.inputs.length.message = this.messages.requiredData;
+                    validation = false;
+                } else if (isNaN(length)) {
+                    this.inputs.length.show = true;
+                    this.inputs.length.message = this.messages.invalidTypeData;
+                    validation = false;
+                }
+
+                return validation;
+            },
+            resetErrorMessages() {
+                this.inputs = {
+                    sku: {
+                        show: false,
+                        message: ''
+                    },
+                    name: {
+                        show: false,
+                        message: ''
+                    },
+                    price: {
+                        show: false,
+                        message: ''
+                    },
+                    type: {
+                        show: false,
+                        message: ''
+                    },
+                    size: {
+                        show: false,
+                        message: ''
+                    },
+                    weight: {
+                        show: false,
+                        message: ''
+                    },
+                    height: {
+                        show: false,
+                        message: ''
+                    },
+                    width: {
+                        show: false,
+                        message: ''
+                    },
+                    length: {
+                        show: false,
+                        message: ''
+                    }
+                }
+            }
+        }
+    });
+
+    app.mount('#app')
+</script>

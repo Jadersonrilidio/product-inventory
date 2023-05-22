@@ -1,0 +1,53 @@
+<div id="app">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container mt-2">
+            <div>
+                <a class="navbar-brand" href="{{app-url}}/">Product List</a>
+            </div>
+
+            <div>
+                <div style="float:left; margin-right:20px">
+                    <a class="navbar-item btn btn-sm btn-secondary" href="{{app-url}}/add-product">Add</a>
+                </div>
+
+                <div style="float:left; margin-right:20px">
+                    <form class="d-flex navbar-item" action="{{app-url}}/" method="POST" id="delete-product-btn">
+                        <input type="hidden" name="delete-list" v-bind:value="productDeleteList">
+                        <button class="btn btn-sm btn-danger" type="submit">Mass Delete</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <hr>
+
+    <div class="container">
+        <div class="row hidden-md-up">
+
+            {{products}}
+
+        </div>
+    </div>
+
+    <hr>
+
+    <div>
+        <p class="text-center">Scandiweb Test assignment</p>
+    </div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                productDeleteList: []
+            }
+        }
+    });
+
+    app.mount('#app')
+</script>

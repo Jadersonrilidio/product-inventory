@@ -1,0 +1,68 @@
+#!usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Jayrods\ProductInventory\Infrastructure\Database\MysqlPdoConnection;
+
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
+
+$queryGetTypeEnum = "SHOW COLUMNS FROM products WHERE Field = 'type'";
+
+$typeEnum = ['DVD', 'Book', 'Furniture'];
+
+/**
+ * Query array to be executed.
+ */
+$queries = array(
+    'Use_Database' => "USE product_inventory_db;",
+
+    'Create_DVD_Insertion_Procedure' => "CREATE PROCEDURE insert_into_products_dvds_tables
+            (sku CHAR(32), name VARCHAR(128), price INT, type ENUM(".typeEnum($typeEnum)."), size INT)
+            BEGIN
+                INSERT INTO products(sku, name, price, type) VALUES(sku, name, price, type);
+                INSERT INTO dvds(sku, size) VALUES(sku, size);
+            END",
+
+    'Create_Book_Insertion_Procedure' => "CREATE PROCEDURE insert_into_products_books_tables
+            (sku CHAR(32), name VARCHAR(128), price INT, type ENUM(".typeEnum($typeEnum)."), weight INT)
+            BEGIN
+                INSERT INTO products(sku, name, price, type) VALUES(sku, name, price, type);
+                INSERT INTO books(sku, weight) VALUES(sku, weight);
+            END",
+
+    'Create_Furniture_Insertion_Procedure' => "CREATE PROCEDURE insert_into_products_furniture_tables
+            (sku CHAR(32), name VARCHAR(128), price INT, type ENUM(".typeEnum($typeEnum)."), height INT, width INT, length INT)
+            BEGIN
+                INSERT INTO products(sku, name, price, type) VALUES(sku, name, price, type);
+                INSERT INTO furniture(sku, height, width, length) VALUES(sku, height, width, length);
+            END",
+);
+
+$mysqlPdoConnection = new MysqlPdoConnection;
+
+$connection = $mysqlPdoConnection->getConnection();
+$connection->query("USE product_inventory_db;");
+
+foreach ($queries as $key => $query) {
+    $connection->query($query);
+    echo "Query '{$key}' executed with success." . PHP_EOL;
+}
+
+exit("Queries executed with success." . PHP_EOL);
+
+//TODO: FUNCTIONS
+
+/**
+ * Format an array of Enum types into a string to fit a SQL query.
+ * 
+ * @param array $typeEnum Array with Enum types.
+ * 
+ * @return string Formated Enum types.
+ */
+function typeEnum(array $typeEnum): string
+{
+    $quotedTypeEnum = array_map(fn ($type) => "'{$type}'", $typeEnum);
+
+    return implode(',', $quotedTypeEnum);
+}
