@@ -131,4 +131,16 @@ class ProductApiController extends ApiController
 
         return new JsonResponse($productTypeList, 200, 'application/json');
     }
+
+    /**
+     * Route: api-fallback.
+     * 
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     */
+    public function notFound(Request $request): JsonResponse
+    {
+        return new JsonResponse(['error' => 'not found'], 404, 'application/json');
+    }
 }

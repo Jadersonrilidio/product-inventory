@@ -19,6 +19,9 @@ return array(
     'POST|/api/products' => [Jayrods\ProductInventory\Http\Controller\Api\ProductApiController::class, 'store'],
     'POST|/api/products/mass-delete' => [Jayrods\ProductInventory\Http\Controller\Api\ProductApiController::class, 'removeMany'],
 
-    // Fallback Route
-    'fallback' => [Jayrods\ProductInventory\Http\Controller\ProductController::class, 'index']
+    // Web Fallback Route
+    'fallback' => [Jayrods\ProductInventory\Http\Controller\ProductController::class, 'index'],
+
+    // API Fallback Route
+    'api-fallback' => [Jayrods\ProductInventory\Http\Controller\Api\ProductApiController::class, 'notFound']
 );

@@ -101,7 +101,7 @@ class Router
             }
         }
 
-        return $this->routes['fallback'];
+        return str_starts_with($uri, '/api') ? $this->routes['api-fallback'] : $this->routes['fallback'];
     }
 
     /**
