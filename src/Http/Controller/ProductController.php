@@ -71,7 +71,7 @@ class ProductController extends Controller
             'products' => $productsContent,
         ]);
 
-        $page = $this->view->renderTemplate('Product List', $pageContent);
+        $page = $this->view->renderTemplate('Product Inventory', $pageContent);
 
         return new Response($page, 200, 'text/html');
     }
@@ -107,7 +107,7 @@ class ProductController extends Controller
             'input-validation-error' => $this->flashMsg->get('sku-error') ?? ''
         ]);
 
-        $page = $this->view->renderTemplate('Product Add', $pageContent);
+        $page = $this->view->renderTemplate('Product Inventory', $pageContent);
 
         return new Response($page, 200, 'text/html');
     }

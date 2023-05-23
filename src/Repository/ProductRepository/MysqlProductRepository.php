@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jayrods\ProductInventory\Repository\ProductRepository;
 
 use Jayrods\ProductInventory\Entity\Product;
+use Jayrods\ProductInventory\Entity\ProductFactory;
 use Jayrods\ProductInventory\Repository\Repository;
 use Jayrods\ProductInventory\Repository\MysqlRepositoryFactory;
 use Jayrods\ProductInventory\Repository\ProductRepository\ProductRepository;
@@ -12,11 +13,6 @@ use PDO;
 
 class MysqlProductRepository extends Repository implements ProductRepository
 {
-    /**
-     * Entity classes base namespace.
-     */
-    private const ENTITY_CLASS_NAMESPACE = "Jayrods\\ProductInventory\\Entity\\";
-
     /**
      * MysqlRepositoryFactory instance.
      */
@@ -56,12 +52,12 @@ class MysqlProductRepository extends Repository implements ProductRepository
      */
     private function create(Product $product): bool
     {
-        $genericRepository = $this->repositoryFactory->create(
+        $specificRepository = $this->repositoryFactory->create(
             $product->type(),
             $this->conn
         );
 
-        return $genericRepository->save($product);
+        return $specificRepository->save($product);
     }
 
     /**
@@ -111,17 +107,8 @@ class MysqlProductRepository extends Repository implements ProductRepository
             ORDER BY products.sku ASC;"
         );
 
-        $products = $stmt->fetchAll(PDO::FETCH_FUNC, function (...$product) {
-            $class = self::ENTITY_CLASS_NAMESPACE . $product[3];
-            unset($product[3]);
-
-            foreach ($product as $key => $value) {
-                if (is_null($value)) {
-                    unset($product[$key]);
-                }
-            }
-
-            return new $class(...$product);
+        $products = $stmt->fetchAll(PDO::FETCH_FUNC, function (...$productData) {
+            return ProductFactory::create($productData);
         });
 
         return $products;
