@@ -19,6 +19,7 @@
         }
     },
     "require": {
+        "php": "^8.0",
         "vlucas/phpdotenv": "^5.5",
         "php-di/php-di": "^7.0"
     },
@@ -27,11 +28,11 @@
             "Composer\\Config::disableProcessTimeout",
             "php -S localhost:8001 -t public/"
         ],
-        "db:init": "php bin/db_init.php",
-        "db:init:procedure": "php bin/db_init_add_procedure.php",
-        "db:init:populate": "php bin/db_init_populate.php",
-        "db:make": "php bin/db_make_product.php",
-        "db:get": "php bin/db_get_product.php",
+        "db:init": "php bin/db_init",
+        "db:init:procedure": "php bin/db_init_add_procedure",
+        "db:init:populate": "php bin/db_init_populate",
+        "db:make": "php bin/db_make_product",
+        "db:get": "php bin/db_get_product",
         "db:init:all": [
             "@db:init",
             "@db:init:procedure",
