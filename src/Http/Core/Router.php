@@ -101,7 +101,7 @@ class Router
             }
         }
 
-        return str_starts_with($uri, '/api') ? $this->routes['api-fallback'] : $this->routes['fallback'];
+        return preg_match('/^\/api(.*?)$/', $uri) === 1 ? $this->routes['api-fallback'] : $this->routes['fallback'];
     }
 
     /**

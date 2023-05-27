@@ -42,9 +42,9 @@ trait JsonCache
      * @param mixed $content Content to cache.
      * @param string $file Cached file name.
      * 
-     * @return ?array Return INT value representing the number of inserted/modified characters if success or FALSE on failure.
+     * @return mixed Return INT value representing the number of inserted/modified characters if success or FALSE on failure.
      */
-    public function storeJsonCache(mixed $content, string $file): int|false
+    public function storeJsonCache($content, string $file)
     {
         $cache = array(
             'timestamp' => time(),

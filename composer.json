@@ -1,6 +1,6 @@
 {
     "name": "jayrods/product-inventory",
-    "description": "Entry-level vacancy test example",
+    "description": "Store, list and delete products from inventory.",
     "license": "MIT",
     "authors": [
         {
@@ -19,10 +19,11 @@
         }
     },
     "require": {
-        "php": "^8.0",
+        "php": "^7.4",
         "vlucas/phpdotenv": "^5.5",
-        "php-di/php-di": "^7.0"
+        "php-di/php-di": "6.0.2"
     },
+    "require-dev": {},
     "scripts": {
         "serve": [
             "Composer\\Config::disableProcessTimeout",
@@ -38,5 +39,10 @@
             "@db:init:procedure",
             "@db:init:populate"
         ]
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
     }
 }

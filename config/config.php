@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Dotenv\Dotenv;
+use Jayrods\ProductInventory\Http\Core\JsonResponse;
 use Jayrods\ProductInventory\Helper\Environment as Env;
 use Jayrods\ProductInventory\Http\Middleware\MiddlewareQueue;
 
@@ -50,3 +51,8 @@ MiddlewareQueue::setDefault(array(
     'maintenance',
     'session'
 ));
+
+// Default CORS Policy settings
+JsonResponse::setApiCORSPolicy(
+    include CONFIG_DIR . 'cors.php'
+);

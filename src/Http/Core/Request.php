@@ -206,9 +206,9 @@ class Request
      * 
      * @param string $param The header to return.
      * 
-     * @return array|string|null
+     * @return mixed
      */
-    public function headers(?string $param = null): array|string|null
+    public function headers(?string $param = null)
     {
         if (is_null($param)) {
             return $this->headers;
@@ -224,7 +224,7 @@ class Request
      * 
      * @return mixed
      */
-    public function uriParams(?string $param = null): mixed
+    public function uriParams(?string $param = null)
     {
         if (!is_null($param)) {
             return $this->uriParams;
@@ -240,7 +240,7 @@ class Request
      * 
      * @return mixed
      */
-    public function queryParams(string $param = null): mixed
+    public function queryParams(string $param = null)
     {
         if (is_null($param)) {
             return $this->queryParams;
@@ -256,7 +256,7 @@ class Request
      * 
      * @return mixed
      */
-    public function inputs(string $param = null): mixed
+    public function inputs(string $param = null)
     {
         if (is_null($param)) {
             return $this->inputs;
@@ -272,7 +272,7 @@ class Request
      * 
      * @return mixed
      */
-    public function files(string $param = null): mixed
+    public function files(string $param = null)
     {
         if (is_null($param)) {
             return $this->files;

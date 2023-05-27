@@ -136,7 +136,7 @@ class ProductController extends Controller
         
         $class = self::ENTITY_CLASS_NAMESPACE . $type;
 
-        $product = new $class(...$inputs);
+        $product = new $class(...array_values($inputs));
 
         $this->productRepository->save($product);
 

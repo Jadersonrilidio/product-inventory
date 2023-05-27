@@ -106,13 +106,13 @@ abstract class Product implements JsonSerializable
      * 
      * @return mixed data which can be serialized by json_encode, which is a value of any type other than a resource.
      */
-    public function jsonSerialize(): mixed
+    public function jsonSerialize()
     {
         return array(
             'sku' => $this->sku,
             'name' => $this->name,
             'price' => $this->formatedPrice(),
-            'specific-attribute' => $this->formatedSpecificAttributes()
+            'specific_attribute' => $this->formatedSpecificAttributes()
         );
     }
 
@@ -124,7 +124,7 @@ abstract class Product implements JsonSerializable
      * 
      * @return void
      */
-    public function __set($name, $value): void
+    public function __set(string $name, $value): void
     {
         // The __set() magic method would be usefull in case of applying the PDO::FETCH_CLASS mode during PDOStatement::fetchAll() method.
 

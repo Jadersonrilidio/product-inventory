@@ -1,6 +1,59 @@
-# Scandiweb Test Project
+# Product Inventory API in PHP
 
 Descriptions goes here ...
+
+## About
+
+The frontend part is here... link
+The backend was an API and a webapp also created (but not recommended)
+
+The database code could be initialized using composer commands:
+
+```sh
+$ composer db:init
+$ composer db:init:procedure
+$ composer db:init:populate
+$ composer db:init:all
+```
+
+Also could run commands to inspect and insert products into database by the command line:
+
+```sh
+$ composer db:get
+$ composer db:make
+```
+
+The application could be served with the composer command:
+
+```sh
+$ composer serve
+```
+
+
+
+## Stack
+
+PHP 7.4
+MySQL 5.7
+Composer dependencies
+    PHPDotEnv
+    PHP-DI
+
+## Author notes
+
+## How it works is a nut-shell
+
+Classic MVC model (Request, Router, Response classes)
+Router object receive a Request instance and handle the called route by the Request's HttpMethod and URI properties;
+According to Request properties the Router search for the route in the map;
+Get the route parameters from route map [Controller, Method, Middlewares];
+Execute the Middleware queue appending the route Middlewares to the default middlewares;
+Instantiate the Controller class using a Dependency Injection Container;
+Call the Controller method,injecting the Request instance into it;
+The controller method returns a Response or JsonResponse
+
+
+## Adding a new product type
 
 ## Quick Start (Use-Guide in a nut-shell)
 
@@ -15,10 +68,7 @@ Example:
     'GET|\home' => [Jayrods\\ScandiwebTest\Http\Controller\HomeController::class, 'homePage', ['session-middleware', 'auth-middleware']]
 If needed, create the related Entities to be called by the controller
 
-
-### About
-
-Description and stuff here plz...
+## Development Deploy
 
 
 ## Development Details

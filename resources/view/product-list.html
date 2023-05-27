@@ -11,7 +11,8 @@
                 </div>
 
                 <div style="float:left; margin-right:20px">
-                    <form class="d-flex navbar-item" action="{{app-url}}/" method="POST" id="delete-product-btn">
+                    <form class="d-flex navbar-item" action="{{app-url}}/" method="POST" id="delete-product-btn"
+                        @submit.prevent="deleteProducts">
                         <input type="hidden" name="delete-list" v-bind:value="productDeleteList">
                         <button class="btn btn-sm btn-danger" type="submit">Mass Delete</button>
                     </form>
@@ -44,7 +45,15 @@
     const app = Vue.createApp({
         data() {
             return {
-                productDeleteList: []
+                productDeleteList: [],
+            }
+        },
+        methods: {
+            deleteProducts(event) {
+                for (let sku of this.productDeleteList) {
+                    document.getElementById(`card_${sku}`).remove()
+                }
+                event.target.submit()
             }
         }
     });

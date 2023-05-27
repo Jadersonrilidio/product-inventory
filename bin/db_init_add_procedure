@@ -18,24 +18,45 @@ $queries = array(
     'Use_Database' => "USE product_inventory_db;",
 
     'Create_DVD_Insertion_Procedure' => "CREATE PROCEDURE insert_into_products_dvds_tables
-            (sku CHAR(32), name VARCHAR(128), price INT, type ENUM(".typeEnum($typeEnum)."), size INT)
+            (sku CHAR(32), name VARCHAR(128), price INT, type ENUM(" . typeEnum($typeEnum) . "), size INT)
             BEGIN
+                DECLARE EXIT HANDLER FOR SQLEXCEPTION
+                BEGIN
+                    ROLLBACK;
+                    RESIGNAL;
+                END;
+                START TRANSACTION;
                 INSERT INTO products(sku, name, price, type) VALUES(sku, name, price, type);
                 INSERT INTO dvds(sku, size) VALUES(sku, size);
+                COMMIT;
             END",
 
     'Create_Book_Insertion_Procedure' => "CREATE PROCEDURE insert_into_products_books_tables
-            (sku CHAR(32), name VARCHAR(128), price INT, type ENUM(".typeEnum($typeEnum)."), weight INT)
+            (sku CHAR(32), name VARCHAR(128), price INT, type ENUM(" . typeEnum($typeEnum) . "), weight INT)
             BEGIN
+                DECLARE EXIT HANDLER FOR SQLEXCEPTION
+                BEGIN
+                    ROLLBACK;
+                    RESIGNAL;
+                END;
+                START TRANSACTION;
                 INSERT INTO products(sku, name, price, type) VALUES(sku, name, price, type);
                 INSERT INTO books(sku, weight) VALUES(sku, weight);
+                COMMIT;
             END",
 
     'Create_Furniture_Insertion_Procedure' => "CREATE PROCEDURE insert_into_products_furniture_tables
-            (sku CHAR(32), name VARCHAR(128), price INT, type ENUM(".typeEnum($typeEnum)."), height INT, width INT, length INT)
+            (sku CHAR(32), name VARCHAR(128), price INT, type ENUM(" . typeEnum($typeEnum) . "), height INT, width INT, length INT)
             BEGIN
+                DECLARE EXIT HANDLER FOR SQLEXCEPTION
+                BEGIN
+                    ROLLBACK;
+                    RESIGNAL;
+                END;
+                START TRANSACTION;
                 INSERT INTO products(sku, name, price, type) VALUES(sku, name, price, type);
                 INSERT INTO furniture(sku, height, width, length) VALUES(sku, height, width, length);
+                COMMIT;
             END",
 );
 

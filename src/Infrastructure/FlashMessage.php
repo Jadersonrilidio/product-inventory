@@ -60,9 +60,9 @@ class FlashMessage
      * 
      * @param string $name Flash message "key" name.
      * 
-     * @return array|null If flash message 'name' is not found, return NULL.
+     * @return ?array If flash message 'name' is not found, return NULL.
      */
-    public function getArray(string $name): array|null
+    public function getArray(string $name): ?array
     {
         return self::$previous[$name] ?? null;
     }

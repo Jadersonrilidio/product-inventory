@@ -1,3 +1,6 @@
 vendor
 .env
 composer.lock
+app-deploy.zip
+.dockerignore
+fly.toml

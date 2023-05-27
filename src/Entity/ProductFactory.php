@@ -11,7 +11,7 @@ class ProductFactory
     /**
      * Create an instance of Product according to product type.
      * 
-     * @param mixed $productData Array with product attributes.
+     * @param array $productData Array with product attributes.
      * 
      * @return Product Concrete Product object.
      */
@@ -25,6 +25,10 @@ class ProductFactory
                 unset($productData[$key]);
             }
         }
+
+        $productData = array_map(function ($value) {
+            return is_numeric($value) ? (int) $value : $value;
+        }, $productData);
 
         return new $class(...$productData);
     }

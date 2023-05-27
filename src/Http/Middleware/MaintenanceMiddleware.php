@@ -42,10 +42,7 @@ class MaintenanceMiddleware implements Middleware
      */
     private function callMaintenanceController(Request $request): void
     {
-        $controller = new MaintenanceController(
-            view: new View(),
-            flashMsg: new FlashMessage()
-        );
+        $controller = new MaintenanceController(new View(),new FlashMessage());
 
         $controller->index($request)->sendResponse();
     }
