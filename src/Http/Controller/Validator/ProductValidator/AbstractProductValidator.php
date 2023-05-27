@@ -47,25 +47,26 @@ abstract class AbstractProductValidator implements Validator
             'name' => $this->validateName($request->inputs('name')),
             'price' => $this->validatePrice($request->inputs('price')),
             'type' => $this->validateType($request->inputs('type'))
-        ));
+        ), $request);
     }
 
     /**
      * Check the validation array.
      * 
      * @param array $validation
+     * @param Request $request
      * 
      * @return bool Return TRUE if all validation passes, FALSE otherwise.
      */
-    protected function check(array $validation): bool
+    protected function check(array $validation, Request $request): bool
     {
         foreach ($validation as $value) {
             if (!$value) {
-                return false;
+                return $this->onFail($request);
             }
         }
 
-        return true;
+        return $this->onSuccess($request);
     }
 
     /**
@@ -73,18 +74,18 @@ abstract class AbstractProductValidator implements Validator
      * 
      * @param Request $request
      * 
-     * @return void
+     * @return bool Return TRUE.
      */
-    abstract protected function onSuccess(Request $request): void;
+    abstract protected function onSuccess(Request $request): bool;
 
     /**
      * Actions to be executed on validation fail.
      * 
      * @param Request $request
      * 
-     * @return void
+     * @return bool Return FALSE.
      */
-    abstract protected function onFail(Request $request): void;
+    abstract protected function onFail(Request $request): bool;
 
     /**
      * SKU input validation.

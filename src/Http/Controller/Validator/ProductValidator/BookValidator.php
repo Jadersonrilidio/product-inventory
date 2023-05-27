@@ -18,14 +18,10 @@ class BookValidator extends AbstractProductValidator
      */
     public function validate(Request $request): bool
     {
-        $validation =  $this->check(array(
+        return $this->check(array(
             'product' => parent::validate($request),
             'weight' => $this->validateWeight($request->inputs('weight'))
-        ));
-
-        $validation ? $this->onSuccess($request) : $this->onFail($request);
-
-        return $validation;
+        ), $request);
     }
 
     /**
@@ -33,11 +29,11 @@ class BookValidator extends AbstractProductValidator
      * 
      * @param Request $request
      * 
-     * @return void
+     * @return bool Return TRUE.
      */
-    protected function onSuccess(Request $request): void
+    protected function onSuccess(Request $request): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -45,9 +41,9 @@ class BookValidator extends AbstractProductValidator
      * 
      * @param Request $request
      * 
-     * @return void
+     * @return bool Return FALSE.
      */
-    protected function onFail(Request $request): void
+    protected function onFail(Request $request): bool
     {
         $this->flashMsg->add(array(
             'sku-value' => $request->inputs('sku'),
@@ -56,6 +52,8 @@ class BookValidator extends AbstractProductValidator
             'type-value' => $request->inputs('type'),
             'weight-value' => $request->inputs('weight')
         ));
+
+        return false;
     }
 
     /**

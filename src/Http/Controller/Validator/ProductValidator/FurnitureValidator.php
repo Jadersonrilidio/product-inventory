@@ -18,16 +18,12 @@ class FurnitureValidator extends AbstractProductValidator
      */
     public function validate(Request $request): bool
     {
-        $validation =  $this->check(array(
+        return $this->check(array(
             'product' => parent::validate($request),
             'height' => $this->validateHeight($request->inputs('height')),
             'width' => $this->validateWidth($request->inputs('width')),
             'length' => $this->validateLength($request->inputs('length'))
-        ));
-
-        $validation ? $this->onSuccess($request) : $this->onFail($request);
-
-        return $validation;
+        ), $request);
     }
 
     /**
@@ -35,11 +31,11 @@ class FurnitureValidator extends AbstractProductValidator
      * 
      * @param Request $request
      * 
-     * @return void
+     * @return bool Return TRUE.
      */
-    protected function onSuccess(Request $request): void
+    protected function onSuccess(Request $request): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -47,9 +43,9 @@ class FurnitureValidator extends AbstractProductValidator
      * 
      * @param Request $request
      * 
-     * @return void
+     * @return bool Return FALSE.
      */
-    protected function onFail(Request $request): void
+    protected function onFail(Request $request): bool
     {
         $this->flashMsg->add(array(
             'sku-value' => $request->inputs('sku'),
@@ -60,6 +56,8 @@ class FurnitureValidator extends AbstractProductValidator
             'width-value' => $request->inputs('width'),
             'length-value' => $request->inputs('length')
         ));
+
+        return false;
     }
 
     /**
