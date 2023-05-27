@@ -18,7 +18,6 @@ There is also available an alternative webapp built entirely from the backend. I
 
 PHP 7.4 and MySQL 5.7
 
-
 ## How it works is a nutshell
 
 Classic MVC model (Request, Router, Response classes)
@@ -30,17 +29,12 @@ Instantiate the Controller class using a Dependency Injection Container;
 Call the Controller method,injecting the Request instance into it;
 The controller method returns a Response or JsonResponse
 
-
 ## Adding a new product type on backend
 
-- Create a new product-type Entity on the path `src/Entity` which extends the `Jayrods\ProductInventory\Entity\Product::class`;
-
-Ex:
+**1 -** Create a new product-type Entity on the path `src/Entity` which extends the `Jayrods\ProductInventory\Entity\Product::class`;
 
 ```php
 <?php
-
-declare(strict_types=1);
 
 namespace Jayrods\ProductInventory\Entity;
 
@@ -52,14 +46,10 @@ class NewProductType extends Product
 }
 ```
 
-- Create a `ProductTypeRepository` folder on the path `src/Repository`, the interface `ProductTypeRepository::class` and class `MysqlProductTypeRepository::class` whithin it, following the models of the other product-derived repositories;
-
-Ex:
+**2 -** Create a `ProductTypeRepository` folder on the path `src/Repository`, the interface `ProductTypeRepository::class` and class `MysqlProductTypeRepository::class` within it, following the models of the other product-derived repositories;
 
 ```php
 <?php
-
-declare(strict_types=1);
 
 namespace Jayrods\ProductInventory\Repository\NewProductTypeRepository;
 
@@ -67,30 +57,14 @@ use Jayrods\ProductInventory\Entity\NewProductType;
 
 interface NewProductTypeRepository
 {
-    /**
-     * Persist a NewProductType on database.
-     * 
-     * @param NewProductType $NewProductType Instance of NewProductType.
-     * 
-     * @return bool TRUE on success or FALSE on failure.
-     */
     public function save(NewProductType $NewProductType): bool;
 
-    /**
-     * Retrieve all NewProductType from database.
-     * 
-     * @return NewProductType[] Array of NewProductType objects.
-     */
     public function all(): array;
 }
 ```
 
-Ex:
-
 ```php
 <?php
-
-declare(strict_types=1);
 
 namespace Jayrods\ProductInventory\Repository\NewProductTypeRepository;
 
@@ -105,14 +79,10 @@ class MysqlNewProductTypeRepository extends Repository implements NewProductType
 }
 ```
 
-- Create a `ProductTypeValidator::class` for specific attributes validation, again following the models of the other product-derived validators;
-
-Ex:
+**3 -** Create a `ProductTypeValidator::class` for specific attributes validation, again following the models of the other product-derived validators;
 
 ```php
 <?php
-
-declare(strict_types=1);
 
 namespace Jayrods\ProductInventory\Http\Controller\Validator\ProductValidator;
 
@@ -125,9 +95,9 @@ class NewProductTypeValidator extends AbstractProductValidator
 }
 ```
 
-- and your new product type in the backend is ready to go! just go for testing it.
+and your new product type in the backend is ready to go!
 
-PS: Remember to add the product Enum type and the product-type on the database as well, following the provided SQL bellow, properly replacing the placeholders:
+**OBS:** Remember to add the product Enum type and the product-type on the database as well. To accomplish that, you can use the following SQL queries, properly replacing the `{{placeholders}}`:
 
 ```sql
 ALTER TABLE IF EXISTS products (
@@ -162,18 +132,51 @@ DELIMITER ;
 ```
 
 
-## Author notes
+## Project Setup on Local Machine
 
-## Clonning and setting on local environment
-
-
-The database code could be initialized using composer commands:
+**1 -** Clone the project from Github:
 
 ```sh
-$ composer db:init
-$ composer db:init:procedure
-$ composer db:init:populate
+$ git clone https://github.com/Jadersonrilidio/product-inventory-backend
+```
+
+**2 -** Install composer and its dependencies:
+
+```sh
+$ composer install
+```
+
+**3 -** Create `.env` file and set the following environment variables:
+
+```sh
+DB_DRIVER=mysql
+DB_NAME=
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=****
+DB_PASSWORD=****
+```
+
+**NOTE** `DB_NAME` should not be set until running the next step.
+
+**4 -** Create database and populate it using the following command:
+
+```sh
 $ composer db:init:all
+```
+
+It runs the schema and tables creation queries, create insertion procedures and populate the database with mock products.
+
+**5 -** Now set the `DB_NAME` on `.env` file as following:
+
+```sh
+DB_NAME=product_inventory_db
+```
+
+**6 -** Now the application should be ready to serve. Try it using the command:
+
+```sh
+$ composer serve
 ```
 
 Also could run commands to inspect and insert products into database by the command line:
@@ -183,12 +186,6 @@ $ composer db:get
 $ composer db:make
 ```
 
-The application could be served with the composer command:
-
-```sh
-$ composer serve
-```
-
 ## Development Details
 
 - The MVC structure applied on this project was taken from my undergoing project [MVC framework (See)](https://github.com/Jadersonrilidio/mvc-framework), and most of features were altered for simplicity sake.
@@ -196,3 +193,5 @@ $ composer serve
 Composer Dependencies:
 - PHPDotEnv for environment variables secure loading
 - PHP-DI for dependency injection through container
+
+## Author notes
