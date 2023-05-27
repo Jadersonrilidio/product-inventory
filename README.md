@@ -35,9 +35,95 @@ The controller method returns a Response or JsonResponse
 
 - Create a new product-type Entity on the path `src/Entity` which extends the `Jayrods\ProductInventory\Entity\Product::class`;
 
+Ex:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Jayrods\ProductInventory\Entity;
+
+use Jayrods\ProductInventory\Entity\Product;
+
+class NewProductType extends Product
+{
+    // Properties and Methods goes here ...
+}
+```
+
 - Create a `ProductTypeRepository` folder on the path `src/Repository`, the interface `ProductTypeRepository::class` and class `MysqlProductTypeRepository::class` whithin it, following the models of the other product-derived repositories;
 
+Ex:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Jayrods\ProductInventory\Repository\NewProductTypeRepository;
+
+use Jayrods\ProductInventory\Entity\NewProductType;
+
+interface NewProductTypeRepository
+{
+    /**
+     * Persist a NewProductType on database.
+     * 
+     * @param NewProductType $NewProductType Instance of NewProductType.
+     * 
+     * @return bool TRUE on success or FALSE on failure.
+     */
+    public function save(NewProductType $NewProductType): bool;
+
+    /**
+     * Retrieve all NewProductType from database.
+     * 
+     * @return NewProductType[] Array of NewProductType objects.
+     */
+    public function all(): array;
+}
+```
+
+Ex:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Jayrods\ProductInventory\Repository\NewProductTypeRepository;
+
+use Jayrods\ProductInventory\Entity\NewProductType;
+use Jayrods\ProductInventory\Repository\NewProductTypeRepository\NewProductTypeRepository;
+use Jayrods\ProductInventory\Repository\Repository;
+use PDO;
+
+class MysqlNewProductTypeRepository extends Repository implements NewProductTypeRepository
+{
+    // Properties and Methods goes here ...
+}
+```
+
 - Create a `ProductTypeValidator::class` for specific attributes validation, again following the models of the other product-derived validators;
+
+Ex:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Jayrods\ProductInventory\Http\Controller\Validator\ProductValidator;
+
+use Jayrods\ProductInventory\Http\Core\Request;
+use Jayrods\ProductInventory\Http\Controller\Validator\ProductValidator\AbstractProductValidator;
+
+class NewProductTypeValidator extends AbstractProductValidator
+{
+    // Properties and Methods goes here ...
+}
+```
 
 - and your new product type in the backend is ready to go! just go for testing it.
 
