@@ -55,10 +55,10 @@ $router->handleRequest()->sendResponse();
 The Application Core is located at `src/Http/Core`, and is represented by the classes `Request`, `Router` and `Response`;
 
 As could be seen above in the `index.php`, the `Router` receives a:
-    - `Request` instance;
-    - dependency injection container instance `$diContainer`;
-    - queue of middlewares represented by `MiddlewareQueue` instance;
-    - Map of routes => parameters, found at `config/routes.php` in the form 'route' => ['Controller class', 'method', 'required middlewares'].
+- `Request` instance;
+- dependency injection container instance `$diContainer`;
+- queue of middlewares represented by `MiddlewareQueue` instance;
+- Map of routes => parameters, found at `config/routes.php` in the form 'route' => ['Controller class', 'method', 'required middlewares'].
 
 The `Router::handleRequest()` method uses the `httpMethod` and `uri` properties from the `Request` to find if the route exists in the `config.routes.php` map;
 
