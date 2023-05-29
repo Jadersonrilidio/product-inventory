@@ -95,8 +95,7 @@ class NewProductTypeValidator extends AbstractProductValidator
 }
 ```
 
-
-**4 -** Rewrite the `MysqlProductRepository::all()` method's SQL query as shown bellow, properly replacing the `{{placeholders}}`: 
+**4 -** Rewrite the `MysqlProductRepository::all()` method's SQL query, properly replacing the `{{placeholders}}`: 
 
 ```sql
 SELECT products.sku, products.name, products.price, products.type,
@@ -112,7 +111,7 @@ SELECT products.sku, products.name, products.price, products.type,
     ORDER BY products.sku ASC;
 ```
 
-**OBS:** This approach could be considered a violation of the Open-Closed SOLID principle ("Software entities ... should be open for extension, but closed for modification."), therefore the alternative **[presented here](https://github.com/Jadersonrilidio/product-inventory-backend/tree/master#improvement-proposal-1)** could be done to fix it.
+**NOTE:** This approach could be considered a violation of the Open-Closed SOLID principle ("Software entities ... should be open for extension, but closed for modification."), therefore the alternative **[presented here](https://github.com/Jadersonrilidio/product-inventory-backend/tree/master#improvement-proposal-1)** could be done to fix it.
 
 ... and your new product type in the backend is ready to go!
 

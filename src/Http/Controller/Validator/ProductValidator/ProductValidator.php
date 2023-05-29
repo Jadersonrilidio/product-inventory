@@ -14,11 +14,6 @@ use Jayrods\ProductInventory\Repository\ProductRepository\ProductRepository;
 class ProductValidator implements Validator
 {
     /**
-     *
-     */
-    private const PRODUCT_VALIDATOR_CLASS_NAMESPACE = "Jayrods\\ProductInventory\\Http\\Controller\\Validator\\ProductValidator\\";
-
-    /**
      * FlashMessage instance.
      */
     private FlashMessage $flashMsg;
@@ -67,7 +62,7 @@ class ProductValidator implements Validator
             throw new DomainException("Product type doesn't exists.");
         }
 
-        $validatorClass = self::PRODUCT_VALIDATOR_CLASS_NAMESPACE . $request->inputs('type') . "Validator";
+        $validatorClass = __NAMESPACE__ . "\\" . $request->inputs('type') . "Validator";
 
         return new $validatorClass($this->flashMsg, $this->productRepository);
     }
