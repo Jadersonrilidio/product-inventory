@@ -68,7 +68,7 @@ class ProductController extends Controller
                     'sku' => $product->sku(),
                     'name' => $product->name(),
                     'price' => $product->formatedPrice(),
-                    'specific-attribute' => $product->formatedSpecificAttributes()
+                    'specific_attribute' => $product->formatedSpecificAttributes()
                 )
             );
         }
