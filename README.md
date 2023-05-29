@@ -12,22 +12,115 @@ The Product Inventory API could be accessed directly through the URL: [https://j
 
 Database [DER Schema here](https://github.com/Jadersonrilidio/product-inventory-backend/blob/master/resources/img/porduct_inventory_DER.png).
 
-There is also available an alternative webapp built entirely from the backend. It could be seen [here](https://jay-product-inventory.000webhostapp.com) Although it is recommended for evaluation purposes (due to "messy" within frontend files, poor view rendering template engine and lack of testing). Please use the main webapp in Vue **[here!](https://jay-product-inventory.vercel.app)**.
+There is also available an alternative webapp built entirely from the backend. It could be seen [here](https://jay-product-inventory.000webhostapp.com) Although it is recommended for evaluation purposes (in my opinion, due to "messy" within frontend files, poor view rendering template engine and lack of testing). Please use the main webapp in Vue **[here!](https://jay-product-inventory.vercel.app)**.
 
 ## Stack
 
 PHP 7.4 and MySQL 5.7
 
-## How it works is a nutshell
+## How the app works is a nutshell
 
-Classic MVC model (Request, Router, Response classes)
-Router object receive a Request instance and handle the called route by the Request's HttpMethod and URI properties;
-According to Request properties the Router search for the route in the map;
-Get the route parameters from route map [Controller, Method, Middlewares];
-Execute the Middleware queue appending the route Middlewares to the default middlewares;
-Instantiate the Controller class using a Dependency Injection Container;
-Call the Controller method,injecting the Request instance into it;
-The controller method returns a Response or JsonResponse
+The application was built as a classic MVC model;
+
+The entrypoint is the `index.php` file located at the `public` folder:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Jayrods\ProductInventory\Http\Core\Request;
+use Jayrods\ProductInventory\Http\Core\Router;
+use Jayrods\ProductInventory\Http\Middleware\MiddlewareQueue;
+use Psr\Container\ContainerInterface;
+
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
+
+/** @var ContainerInterface */
+$diContainer = require CONFIG_DIR . 'dependencies.php';
+
+$routes = require CONFIG_DIR . 'routes.php';
+
+$router = new Router(
+    new Request(),
+    new MiddlewareQueue(),
+    $diContainer,
+    $routes
+);
+
+$router->handleRequest()->sendResponse();
+```
+
+The Application Core is located at `src/Http/Core`, and is represented by the classes `Request`, `Router` and `Response`;
+
+As could be seen above in the `index.php`, the `Router` receives a:
+    - `Request` instance;
+    - dependency injection container instance `$diContainer`;
+    - queue of middlewares represented by `MiddlewareQueue` instance;
+    - Map of routes => parameters, found at `config/routes.php` in the form 'route' => ['Controller class', 'method', 'required middlewares'].
+
+The `Router::handleRequest()` method uses the `httpMethod` and `uri` properties from the `Request` to find if the route exists in the `config.routes.php` map;
+
+if the route is not found, it returns the `fallback` route parameters, set in the `config/routes.php`, as shown bellow;
+
+```php
+    // Web Fallback Route
+'fallback' => [Jayrods\ProductInventory\Http\Controller\ProductController::class, 'index', []]
+```
+
+if found, it returns the route parameters, represented by an array of Controller class, method, and middlewares to be executed, as the example below:
+
+```php
+    // Web Route
+'GET|/' => [Jayrods\ProductInventory\Http\Controller\ProductController::class, 'index', ['session', 'auth']]
+```
+
+With the route parameters in hand, the `Router::handleRequest()` method:
+- Execute the middlewares queue, adding the route middlewares to it;
+- Instantiate the Controller class, using a dependency injection container `$diContainer`;
+- Call the Controller method, injecting the `Request` instance into it and returning a `Response::class` object;
+
+Then, the `Response::sendResponse()` method is called, forwarding the response content to the client, setting the Headers, HTTP code, Content-Type, CORS Policy (and all sort of settings needed), thus completing the app lifecycle.
+
+### Project folder structure
+
+**OBS:** The filesystem used in this project was based in the [php-pds/skeleton](https://github.com/php-pds/skeleton) standards proposal, available at github.
+
+The `src` folder structure is briefly explained in this JSON schema bellow:
+
+```json
+{
+    "Entity" : "Classes which represents the database entities. ValueObjects also could be stored inside Entity.",
+    "Helper": {
+        "Traits": "Traits that could be used in a global scope are stored here.",
+        "Helper classes are stored in the Helper folder."
+    },
+    "Http": {
+        "Controller": {
+            "API": "Store the API related Controllers.",
+            "Validator": "User input validation classes are stored here.",
+            "Web Controllers are stored at the root of the Controller folders."
+        },
+        "Core": "The app Core classes are stored here.",
+        "Middlewares": "All Middleware classes and interface + MiddlewareQueue are stored here."
+    },
+    "Infrastructure": {
+        "Database": "Database Connection abstraction classes are stored here.",
+        "Classes related to the app infrastructure are stored here."
+    },
+    "Repository": "All the database logic and interaction is abstracted by Repository classes and stored here."
+}
+```
+
+- Entities from database are represented by an `Entity` class, located at the `src/Entity` folder;
+- Controllers are located at `src/Http/Controller` path, and the `src/Http/Controller/Api` path holds the API controllers;
+- User input validation is abstracted by the `Validator` classes, located at `src/Http/Controller/Validator` folder, which validate inputs according to the domain rules and could take an action in case of success or fail;
+- Database connection abstraction is located at `src/Infrastructure/Database`;
+- All the Database logic and interaction is abstracted by the Repository classes, located at `src/Repository`;
+- Each `Entity::class` may have a respective Repository-specific folder, containing a `EntityRepository` interface and its implementations, as example `MysqlEntityRepository::class` or `JsonEntityrepository::class`;
+
+**In any case of doubt or questions, please do not hesitate to contact the author** [jaderson.rodrigues@yahoo.com](jaderson.rodrigues@yahoo.com).
 
 ## Adding a new product type on backend
 
@@ -149,7 +242,6 @@ CREATE PROCEDURE insert_into_products_{{NewProducts}}_tables
 DELIMITER ;
 ```
 
-
 ## Project Setup on Local Machine
 
 **1 -** Clone the project from Github:
@@ -191,13 +283,25 @@ It runs the schema and tables creation queries, create insertion procedures and 
 DB_NAME=product_inventory_db
 ```
 
-**6 -** Now the application should be ready to serve. Try it using the command:
+**6 -** Now the application should be ready to serve.
+
+To run the application in a local environment from PHP default server, run the command:
 
 ```sh
 $ composer serve
 ```
 
-Also could run commands to inspect and insert products into database by the command line:
+To run the application with Apache2 server, create the `.htaccess` file in the root folder with the script:
+
+```sh
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule (.*) ./public/index.php/$1 [QSA,L]
+```
+
+Also could run commands to list and insert products into database by the commands:
 
 ```sh
 $ composer db:get
@@ -218,7 +322,7 @@ $ composer db:make
     },
     "require-dev": {
         "squizlabs/php_codesniffer ^3.7": "PSR12 code checking",
-        "phan/phan ^5.4": "Code review"
+        "phan/phan ^5.4": "Code review helper"
     },
 }
 ```
