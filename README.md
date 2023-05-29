@@ -98,8 +98,6 @@ class NewProductTypeValidator extends AbstractProductValidator
 
 **4 -** Rewrite the `MysqlProductRepository::all()` method's SQL query as shown bellow, properly replacing the `{{placeholders}}`: 
 
-**OBS:** This approach could be considered a violation of the Open-Closed SOLID principle ("Software entities ... should be open for extension, but closed for modification."), therefore the alternative **[presented here](https://github.com/Jadersonrilidio/product-inventory-backend/tree/master#improvement-proposal-1)** could be done to fix it.
-
 ```sql
 SELECT products.sku, products.name, products.price, products.type,
         dvds.size,
@@ -114,7 +112,9 @@ SELECT products.sku, products.name, products.price, products.type,
     ORDER BY products.sku ASC;
 ```
 
-and your new product type in the backend is ready to go!
+**OBS:** This approach could be considered a violation of the Open-Closed SOLID principle ("Software entities ... should be open for extension, but closed for modification."), therefore the alternative **[presented here](https://github.com/Jadersonrilidio/product-inventory-backend/tree/master#improvement-proposal-1)** could be done to fix it.
+
+... and your new product type in the backend is ready to go!
 
 **OBS:** Remember to add the product Enum type and the product-type on the database as well. To accomplish that, you can use the following SQL queries, properly replacing the `{{placeholders}}`:
 
