@@ -14,7 +14,7 @@ use Jayrods\ProductInventory\Repository\ProductRepository\ProductRepository;
 class ProductValidator implements Validator
 {
     /**
-     * 
+     *
      */
     private const PRODUCT_VALIDATOR_CLASS_NAMESPACE = "Jayrods\\ProductInventory\\Http\\Controller\\Validator\\ProductValidator\\";
 
@@ -30,8 +30,8 @@ class ProductValidator implements Validator
 
     /**
      * Class constructor.
-     * 
-     * @param FlashMessage $flashMsg
+     *
+     * @param FlashMessage      $flashMsg
      * @param ProductRepository $productRepository
      */
     public function __construct(FlashMessage $flashMsg, ProductRepository $productRepository)
@@ -42,9 +42,9 @@ class ProductValidator implements Validator
 
     /**
      * Instantiate a ProductValidator object according to given product type input and execute validation.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return bool Return TRUE if inputs are valid, FALSE otherwise.
      */
     public function validate(Request $request): bool
@@ -56,9 +56,9 @@ class ProductValidator implements Validator
 
     /**
      * Factory method. Instantiate a AbstractProductValidator object according to given product type input.
-     * 
+     *
      * @param Requet $request
-     * 
+     *
      * @return AbstractProductValidator
      */
     private function create(Request $request): AbstractProductValidator
@@ -74,9 +74,9 @@ class ProductValidator implements Validator
 
     /**
      * Check whether product type exists.
-     * 
+     *
      * @param string $type
-     * 
+     *
      * @return bool
      */
     private function typeExists(string $type): bool

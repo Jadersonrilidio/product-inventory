@@ -32,14 +32,18 @@ class ProductController extends Controller
 
     /**
      * Class constructor.
-     * 
-     * @param View $view
-     * @param FlashMessage $flashMsg
-     * @param ProductRepository $productRepository
+     *
+     * @param View                    $view
+     * @param FlashMessage            $flashMsg
+     * @param ProductRepository       $productRepository
      * @param ProductValidatorFactory $productValidatorFactory
      */
-    public function __construct(View $view, FlashMessage $flashMsg, ProductRepository $productRepository, ProductValidator $productValidator)
-    {
+    public function __construct(
+        View $view,
+        FlashMessage $flashMsg,
+        ProductRepository $productRepository,
+        ProductValidator $productValidator
+    ) {
         parent::__construct($view, $flashMsg);
 
         $this->productRepository = $productRepository;
@@ -48,9 +52,9 @@ class ProductController extends Controller
 
     /**
      * Route: GET|/.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return Response
      */
     public function index(Request $request): Response
@@ -58,18 +62,24 @@ class ProductController extends Controller
         $productsContent = '';
 
         foreach ($this->productRepository->all() as $product) {
-            $productsContent .= $this->view->renderComponent('product-container', array(
-                'sku' => $product->sku(),
-                'name' => $product->name(),
-                'price' => $product->formatedPrice(),
-                'specific-attribute' => $product->formatedSpecificAttributes()
-            ));
+            $productsContent .= $this->view->renderComponent(
+                'product-container',
+                array(
+                    'sku' => $product->sku(),
+                    'name' => $product->name(),
+                    'price' => $product->formatedPrice(),
+                    'specific-attribute' => $product->formatedSpecificAttributes()
+                )
+            );
         }
 
-        $pageContent = $this->view->renderView('product-list', [
-            'app-url' => APP_URL,
-            'products' => $productsContent,
-        ]);
+        $pageContent = $this->view->renderView(
+            'product-list',
+            [
+                'app-url' => APP_URL,
+                'products' => $productsContent,
+            ]
+        );
 
         $page = $this->view->renderTemplate('Product Inventory', $pageContent);
 
@@ -78,15 +88,15 @@ class ProductController extends Controller
 
     /**
      * Route: POST|/.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return Response
      */
     public function deleteProduct(Request $request): Response
     {
         $deleteList = explode(',', $request->inputs('delete-list'));
-        
+
         $this->productRepository->removeManyBySku(...$deleteList);
 
         Router::redirect();
@@ -95,17 +105,20 @@ class ProductController extends Controller
 
     /**
      * Route: GET|/add-product.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return Response
      */
     public function addProductPage(Request $request): Response
     {
-        $pageContent = $this->view->renderView('product-add', [
-            'app-url' => APP_URL,
-            'input-validation-error' => $this->flashMsg->get('sku-error') ?? ''
-        ]);
+        $pageContent = $this->view->renderView(
+            'product-add',
+            [
+                'app-url' => APP_URL,
+                'input-validation-error' => $this->flashMsg->get('sku-error') ?? ''
+            ]
+        );
 
         $page = $this->view->renderTemplate('Product Inventory', $pageContent);
 
@@ -114,9 +127,9 @@ class ProductController extends Controller
 
     /**
      * Route: POST|/add-product.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return Response
      */
     public function addProduct(Request $request): Response
@@ -130,10 +143,13 @@ class ProductController extends Controller
         $type = $inputs['type'];
         unset($inputs['type']);
 
-        $inputs = array_map(function ($input) {
-            return is_numeric($input) ? (int) $input : $input;
-        }, $inputs);
-        
+        $inputs = array_map(
+            function ($input) {
+                return is_numeric($input) ? (int) $input : $input;
+            },
+            $inputs
+        );
+
         $class = self::ENTITY_CLASS_NAMESPACE . $type;
 
         $product = new $class(...array_values($inputs));

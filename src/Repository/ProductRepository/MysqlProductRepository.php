@@ -20,7 +20,7 @@ class MysqlProductRepository extends Repository implements ProductRepository
 
     /**
      * Class constructor.
-     * 
+     *
      * @param PDO $conn PDO connection instance.
      * @param MysqliRepositoryFacotry $repositoryFactory MysqlRepositoryFactory instance.
      */
@@ -33,9 +33,9 @@ class MysqlProductRepository extends Repository implements ProductRepository
 
     /**
      * Persist a product on database.
-     * 
+     *
      * @param Product $product Instance of Product.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     public function save(Product $product): bool
@@ -45,9 +45,9 @@ class MysqlProductRepository extends Repository implements ProductRepository
 
     /**
      * Persist a new product on database.
-     * 
+     *
      * @param Product $product Instance of Product.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     private function create(Product $product): bool
@@ -62,9 +62,9 @@ class MysqlProductRepository extends Repository implements ProductRepository
 
     /**
      * Delete a product from database by SKU.
-     * 
+     *
      * @param string $skuList Product SKU list.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     public function removeManyBySku(string ...$skuList): bool
@@ -89,7 +89,7 @@ class MysqlProductRepository extends Repository implements ProductRepository
 
     /**
      * Retrieve all products from database.
-     * 
+     *
      * @return Product[] Array of Product objects.
      */
     public function all(): array
@@ -107,16 +107,38 @@ class MysqlProductRepository extends Repository implements ProductRepository
             ORDER BY products.sku ASC;"
         );
 
-        $products = $stmt->fetchAll(PDO::FETCH_FUNC, function (...$productData) {
-            return ProductFactory::create($productData);
-        });
+        $products = $stmt->fetchAll(
+            PDO::FETCH_FUNC,
+            function (...$productData) {
+                return ProductFactory::create($productData);
+            }
+        );
+
+        return $products;
+    }
+
+    /**
+     * Retrieve all products from database.
+     *
+     * @return Product[] Array of Product objects.
+     */
+    public function improvedAll(): array
+    {
+        $products = [];
+
+        foreach ($this->getEnumTypes() as $type) {
+            $specificRepository = $this->repositoryFactory->create($type, $this->conn);
+            array_push($products, $specificRepository->all());
+        }
+
+        usort($products, fn ($prev, $next) => strcasecmp($prev->sku(), $next->sku()));
 
         return $products;
     }
 
     /**
      * Retrieve all products SKU from database.
-     * 
+     *
      * @return string[] Array of producs SKU.
      */
     public function skuList(): array
@@ -130,9 +152,9 @@ class MysqlProductRepository extends Repository implements ProductRepository
 
     /**
      * Check whether a SKU value exists on database.
-     * 
+     *
      * @param string $sku Product SKU to be search.
-     * 
+     *
      * @return bool Return TRUE if SKU already exists or FALSE otherwise.
      */
     public function skuExists(string $sku): bool
@@ -141,16 +163,18 @@ class MysqlProductRepository extends Repository implements ProductRepository
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->execute(array(
-            ':sku' => $sku
-        ));
+        $stmt->execute(
+            array(
+                ':sku' => $sku
+            )
+        );
 
         return empty($stmt->fetchAll()) ? false : true;
     }
 
     /**
      * Return array containing the Enum types from the Field 'type'.
-     * 
+     *
      * @return string[] Array of product types.
      */
     public function getEnumTypes(): array
@@ -170,9 +194,9 @@ class MysqlProductRepository extends Repository implements ProductRepository
 
     // /**
     //  * Delete a product from database.
-    //  * 
+    //  *
     //  * @param Product $product Instance of Product.
-    //  * 
+    //  *
     //  * @return bool TRUE on success or FALSE on failure.
     //  */
     // public function remove(Product $product): bool
@@ -188,9 +212,9 @@ class MysqlProductRepository extends Repository implements ProductRepository
 
     // /**
     //  * Find and retrieve a product by its SKU.
-    //  * 
+    //  *
     //  * @param string $sku Product SKU to be found.
-    //  * 
+    //  *
     //  * @return Product|false Product object on success or FALSE on failure.
     //  */
     // public function find(string $sku): Product|false

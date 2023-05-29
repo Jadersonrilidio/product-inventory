@@ -15,11 +15,11 @@ class Book extends Product
 
     /**
      * Class constructor.
-     * 
+     *
      * @param string $sku
      * @param string $name
-     * @param int $price
-     * @param int $weight
+     * @param int    $price
+     * @param int    $weight
      */
     public function __construct(string $sku, string $name, int $price, int $weight)
     {
@@ -31,7 +31,7 @@ class Book extends Product
 
     /**
      * Return Book weight in KG.
-     * 
+     *
      * @return int
      */
     public function weight(): int
@@ -41,8 +41,8 @@ class Book extends Product
 
     /**
      * Return formated Book weight in KG.
-     * 
-     * @return int
+     *
+     * @return string
      */
     public function formatedWeight(): string
     {
@@ -51,7 +51,7 @@ class Book extends Product
 
     /**
      * Return formated specific attributes.
-     * 
+     *
      * @return string
      */
     public function formatedSpecificAttributes(): string

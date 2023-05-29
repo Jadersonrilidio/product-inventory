@@ -38,9 +38,9 @@ class MiddlewareQueue
 
     /**
      * Set the middlewares map.
-     * 
+     *
      * @param array $map
-     * 
+     *
      * @return void
      */
     public static function setMap(array $map): void
@@ -50,9 +50,9 @@ class MiddlewareQueue
 
     /**
      * Set default middlewares.
-     * 
+     *
      * @param array $default
-     * 
+     *
      * @return void
      */
     public static function setDefault(array $default): void
@@ -62,9 +62,9 @@ class MiddlewareQueue
 
     /**
      * Add middlewares to be executed on queue.
-     * 
+     *
      * @param array $middlewares
-     * 
+     *
      * @return void
      */
     public function addMiddlewares(array $middlewares): void
@@ -74,9 +74,9 @@ class MiddlewareQueue
 
     /**
      * Execute the middleware on queue and call the next.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return bool Return TRUE on execution success or FALSE on failure.
      */
     public function next(Request $request): bool

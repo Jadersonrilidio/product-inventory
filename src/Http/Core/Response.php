@@ -28,14 +28,18 @@ class Response
 
     /**
      * Class constructor.
-     * 
+     *
      * @param string $content
-     * @param int $httpCode
+     * @param int    $httpCode
      * @param string $contentType
-     * @param array $headers
+     * @param array  $headers
      */
-    public function __construct(string $content, int $httpCode = 200, string $contentType = 'text/html', array $headers = [])
-    {
+    public function __construct(
+        string $content,
+        int $httpCode = 200,
+        string $contentType = 'text/html',
+        array $headers = []
+    ) {
         $this->content = $content;
         $this->contentType = $contentType;
         $this->httpCode = $httpCode;
@@ -45,7 +49,7 @@ class Response
 
     /**
      * Send Response.
-     * 
+     *
      * @return void
      */
     public function sendResponse(): void
@@ -61,7 +65,7 @@ class Response
 
     /**
      * Add Content-Type to Response headers.
-     * 
+     *
      * @return void
      */
     protected function addContentTypeToHeaders(): void
@@ -71,7 +75,7 @@ class Response
 
     /**
      * Send headers.
-     * 
+     *
      * @return void
      */
     protected function sendHeaders(): void

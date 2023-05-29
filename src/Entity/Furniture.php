@@ -25,13 +25,13 @@ class Furniture extends Product
 
     /**
      * Class constructor.
-     * 
+     *
      * @param string $sku
      * @param string $name
-     * @param int $price
-     * @param int $height
-     * @param int $width
-     * @param int $length
+     * @param int    $price
+     * @param int    $height
+     * @param int    $width
+     * @param int    $length
      */
     public function __construct(string $sku, string $name, int $price, int $height, int $width, int $length)
     {
@@ -45,7 +45,7 @@ class Furniture extends Product
 
     /**
      * Return furniture height in cm.
-     * 
+     *
      * @return int
      */
     public function height(): int
@@ -55,7 +55,7 @@ class Furniture extends Product
 
     /**
      * Return furniture width in cm.
-     * 
+     *
      * @return int
      */
     public function width(): int
@@ -65,7 +65,7 @@ class Furniture extends Product
 
     /**
      * Return furniture length in cm.
-     * 
+     *
      * @return int
      */
     public function length(): int
@@ -75,7 +75,7 @@ class Furniture extends Product
 
     /**
      * Return formated furniture dimensions in cm.
-     * 
+     *
      * @return string
      */
     public function dimension(): string
@@ -85,7 +85,7 @@ class Furniture extends Product
 
     /**
      * Return formated specific attributes.
-     * 
+     *
      * @return string
      */
     public function formatedSpecificAttributes(): string

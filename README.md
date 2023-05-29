@@ -95,6 +95,25 @@ class NewProductTypeValidator extends AbstractProductValidator
 }
 ```
 
+
+**4 -** Rewrite the `MysqlProductRepository::all()` method's SQL query as shown bellow, properly replacing the `{{placeholders}}`: 
+
+**OBS:** This approach could be considered a violation of the Open-Closed SOLID principle ("Software entities ... should be open for extension, but closed for modification."), therefore the alternative **[presented here](https://github.com/Jadersonrilidio/product-inventory-backend/tree/master#improvement-proposal-1)** could be done to fix it.
+
+```sql
+SELECT products.sku, products.name, products.price, products.type,
+        dvds.size,
+        books.weight,
+        furniture.height, furniture.width, furniture.length,
+        {{NewProducts}}.{{NewAttribute}}
+    FROM products
+        LEFT JOIN dvds ON dvds.sku = products.sku
+        LEFT JOIN books ON books.sku = products.sku
+        LEFT JOIN furniture ON furniture.sku = products.sku
+        LEFT JOIN {{NewProducts}} ON {{NewProducts}}.sku = products.sku
+    ORDER BY products.sku ASC;
+```
+
 and your new product type in the backend is ready to go!
 
 **OBS:** Remember to add the product Enum type and the product-type on the database as well. To accomplish that, you can use the following SQL queries, properly replacing the `{{placeholders}}`:
@@ -188,10 +207,43 @@ $ composer db:make
 
 ## Development Details
 
-- The MVC structure applied on this project was taken from my undergoing project [MVC framework (See)](https://github.com/Jadersonrilidio/mvc-framework), and most of features were altered for simplicity sake.
+- The MVC structure applied on this project was taken from my undergoing project [MVC framework (See)](https://github.com/Jadersonrilidio/mvc-framework). Most of features were altered for simplicity sake.
 
-Composer Dependencies:
-- PHPDotEnv for environment variables secure loading
-- PHP-DI for dependency injection through container
+- Required Composer dependencies:
 
-## Author notes
+```json
+{
+    "require": {
+        "vlucas/phpdotenv ^5.5": "for environment variables secure loading",
+        "php-di/php-di 6.0.2": "for dependency injection through container"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer ^3.7": "PSR12 code checking",
+        "phan/phan ^5.4": "Code review"
+    },
+}
+```
+
+## Improvement proposal 1
+
+In order to fix the SOLID Open-Closed principle violation, the `MysqlProductRepository::all()` method could be implemented this manner:
+
+```php
+// Jayrods\ProductInventory\Repository\ProductRepository\MysqlProductRepository::class
+
+public function all(): array
+{
+    $products = [];
+
+    foreach ($this->getEnumTypes() as $type) {
+        $specificRepository = $this->repositoryFactory->create($type, $this->conn);
+        array_push($products, $specificRepository->all());
+    }
+
+    usort($products, fn ($prev, $next) => strcasecmp($prev->sku(), $next->sku()));
+
+    return $products;
+}
+```
+
+Provided all ProductType repositories have the `all()` method implemented.

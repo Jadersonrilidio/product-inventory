@@ -29,9 +29,9 @@ class ProductApiController extends ApiController
 
     /**
      * Class constructor
-     * 
+     *
      * @param ProductRepository $productRepository
-     * @param ProductValidator $productValidator
+     * @param ProductValidator  $productValidator
      */
     public function __construct(ProductRepository $productRepository, ProductValidator $productValidator)
     {
@@ -41,9 +41,9 @@ class ProductApiController extends ApiController
 
     /**
      * Route: GET|/api/products.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return JsonResponse
      */
     public function all(Request $request): JsonResponse
@@ -55,9 +55,9 @@ class ProductApiController extends ApiController
 
     /**
      * Route: POST|/api/products.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
@@ -71,9 +71,12 @@ class ProductApiController extends ApiController
         $type = $inputs['type'];
         unset($inputs['type']);
 
-        $data = array_map(function ($input) {
-            return is_numeric($input) ? (int) $input : $input;
-        }, $inputs);
+        $data = array_map(
+            function ($input) {
+                return is_numeric($input) ? (int) $input : $input;
+            },
+            $inputs
+        );
 
         $class = self::ENTITY_CLASS_NAMESPACE . $type;
 
@@ -88,9 +91,9 @@ class ProductApiController extends ApiController
 
     /**
      * Route: POST|/api/products/mass-delete.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return JsonResponse
      */
     public function removeMany(Request $request): JsonResponse
@@ -106,9 +109,9 @@ class ProductApiController extends ApiController
 
     /**
      * Route: GET|/api/products/sku.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return JsonResponse
      */
     public function skuList(Request $request): JsonResponse
@@ -120,9 +123,9 @@ class ProductApiController extends ApiController
 
     /**
      * Route: GET|/api/products/type.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return JsonResponse
      */
     public function productTypeList(Request $request): JsonResponse
@@ -134,9 +137,9 @@ class ProductApiController extends ApiController
 
     /**
      * Route: api-fallback.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return JsonResponse
      */
     public function notFound(Request $request): JsonResponse

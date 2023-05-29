@@ -23,22 +23,33 @@
         "vlucas/phpdotenv": "^5.5",
         "php-di/php-di": "6.0.2"
     },
-    "require-dev": {},
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7",
+        "phan/phan": "^5.4"
+    },
     "scripts": {
         "serve": [
             "Composer\\Config::disableProcessTimeout",
             "php -S localhost:8001 -t public/"
         ],
+        "cbf": "phpcbf src/",
+        "cs": "phpcs --standard=PSR12 src/",
+        "phan": "phan --allow-polyfill-parser",
+        "check": [
+            "@phan",
+            "@cbf",
+            "@cs"
+        ],
         "db:init": "php bin/db_init",
         "db:init:procedure": "php bin/db_init_add_procedure",
         "db:init:populate": "php bin/db_init_populate",
-        "db:make": "php bin/db_make_product",
-        "db:get": "php bin/db_get_product",
         "db:init:all": [
             "@db:init",
             "@db:init:procedure",
             "@db:init:populate"
-        ]
+        ],
+        "db:make": "php bin/db_make_product",
+        "db:get": "php bin/db_get_product"
     },
     "config": {
         "platform": {

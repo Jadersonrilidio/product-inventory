@@ -15,11 +15,11 @@ class DVD extends Product
 
     /**
      * Class constructor.
-     * 
+     *
      * @param string $sku
      * @param string $name
-     * @param int $price
-     * @param int $size
+     * @param int    $price
+     * @param int    $size
      */
     public function __construct(string $sku, string $name, int $price, int $size)
     {
@@ -31,8 +31,8 @@ class DVD extends Product
 
     /**
      * Return DVD's memory size in MB.
-     * 
-     * @return int 
+     *
+     * @return int
      */
     public function size(): int
     {
@@ -41,7 +41,7 @@ class DVD extends Product
 
     /**
      * Return formated DVD's memory size in MB.
-     * 
+     *
      * @return string
      */
     public function formatedSize(): string
@@ -51,7 +51,7 @@ class DVD extends Product
 
     /**
      * Return formated specific attributes.
-     * 
+     *
      * @return string
      */
     public function formatedSpecificAttributes(): string

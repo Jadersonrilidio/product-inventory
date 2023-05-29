@@ -13,9 +13,9 @@ class MysqlFurnitureRepository extends Repository implements FurnitureRepository
 {
     /**
      * Persist a furniture on database.
-     * 
+     *
      * @param Furniture $furniture Instance of Furniture.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     public function save(Furniture $furniture): bool
@@ -25,9 +25,9 @@ class MysqlFurnitureRepository extends Repository implements FurnitureRepository
 
     /**
      * Persist a new furniture on database.
-     * 
+     *
      * @param Furniture $furniture Instance of Furniture.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     private function create(Furniture $furniture): bool
@@ -49,7 +49,7 @@ class MysqlFurnitureRepository extends Repository implements FurnitureRepository
 
     /**
      * Retrieve all furniture from database.
-     * 
+     *
      * @return Furniture[] Array of Furniture objects.
      */
     public function all(): array
@@ -61,8 +61,11 @@ class MysqlFurnitureRepository extends Repository implements FurnitureRepository
 
         $stmt = $this->conn->query($query);
 
-        return $stmt->fetchAll(PDO::FETCH_FUNC, function ($sku, $name, $price, $height, $width, $length) {
-            return new Furniture($sku, $name, $price, $height, $width, $length);
-        });
+        return $stmt->fetchAll(
+            PDO::FETCH_FUNC,
+            function ($sku, $name, $price, $height, $width, $length) {
+                return new Furniture($sku, $name, $price, $height, $width, $length);
+            }
+        );
     }
 }

@@ -28,7 +28,7 @@ class Request
 
     /**
      * Array containing request URI parameters, if any.
-     * 
+     *
      * URI params are available in the form 'key' => 'value', where the 'key' is the parameter name given by the route.
      */
     private array $uriParams = [];
@@ -64,10 +64,10 @@ class Request
 
     /**
      * Add request URI parameters, if any;
-     * 
-     * @param array $keys URI parameters' names, given by the route.
+     *
+     * @param array $keys   URI parameters' names, given by the route.
      * @param array $values URI parameters' values.
-     * 
+     *
      * @return void
      */
     public function addUriParams(array $keys, array $values): void
@@ -77,11 +77,11 @@ class Request
 
     /**
      * Sanitize and add the URI parameters.
-     * 
-     * If the sanitizing process fails or the value has only whitespace-like characters, the given URI parameter is not added.
-     * 
+     *
+     * If the sanitizing process fails or the value has only whitespace characters, the URI parameter is not added.
+     *
      * @param array $params In the form "name" => "value".
-     * 
+     *
      * @return void
      */
     private function handleUriParams(array $params): void
@@ -96,7 +96,7 @@ class Request
 
     /**
      * Return the URI sanitized by 'filter_input' function.
-     * 
+     *
      * @return string
      */
     private function sanitizedUri(): string
@@ -107,10 +107,10 @@ class Request
     }
 
     /**
-     * Sanitize and add query parameters.
-     * 
-     * If the sanitizing process fails or the value has only whitespace-like characters, the given query parameter is not added.
-     * 
+     * Sanitize and add query params.
+     *
+     * If the sanitizing process fails or the value has only whitespace characters, the queryparam is not added.
+     *
      * @return void
      */
     private function handleQueryParams(): void
@@ -127,9 +127,9 @@ class Request
 
     /**
      * Sanitize and add POST variables to 'input' object property.
-     * 
-     * If the sanitizing process fails or the value has only whitespace-like characters, the given POST variable is not added.
-     * 
+     *
+     * If the sanitizing process fails or the value has only whitespace characters, the POST variable is not added.
+     *
      * @return void
      */
     private function handlePostVars(): void
@@ -146,11 +146,11 @@ class Request
 
     /**
      * Return array of files.
-     * 
+     *
      * Each file has an unique 'hash' field added for storage purposes. If no file is found, return an empty array.
-     * 
-     * @param ?array $files The files to be added, could be the $_FILES global variable or a custom form, provided the file array structure data is maintained.
-     * 
+     *
+     * @param ?array $files
+     *
      * @return array
      */
     private function handleFiles(?array $files = null): array
@@ -159,21 +159,24 @@ class Request
             return [];
         }
 
-        $files = array_map(function ($file) {
-            $extension = explode('.', $file['name'])[1];
-            $hashedName = 'upload_' . hash('md5', uniqid() . time());
+        $files = array_map(
+            function ($file) {
+                $extension = explode('.', $file['name'])[1];
+                $hashedName = 'upload_' . hash('md5', uniqid() . time());
 
-            $file['hash'] = $hashedName . '.' . $extension;
+                $file['hash'] = $hashedName . '.' . $extension;
 
-            return $file;
-        }, $files);
+                return $file;
+            },
+            $files
+        );
 
         return $files ?? [];
     }
 
     /**
      * Get request HTTP method.
-     * 
+     *
      * @return string
      */
     public function httpMethod(): string
@@ -183,7 +186,7 @@ class Request
 
     /**
      * Get request URI.
-     * 
+     *
      * @return string
      */
     public function uri(): string
@@ -193,7 +196,7 @@ class Request
 
     /**
      * Get request Content-Type.
-     * 
+     *
      * @return string
      */
     public function contentType(): string
@@ -202,10 +205,10 @@ class Request
     }
 
     /**
-     * Return a header value or the request headers array if no argument is provided, return null if the header is not found.
-     * 
+     * Return header value or headers array if no argument is provided, return NULL if header is not found.
+     *
      * @param string $param The header to return.
-     * 
+     *
      * @return mixed
      */
     public function headers(?string $param = null)
@@ -218,10 +221,10 @@ class Request
     }
 
     /**
-     * Return an URI parameter value or an array with URI parameters if no argument is provided, return null if the URI parameter is not found.
-     * 
+     * Return URI param value or array of URI params if no argument is provided, return NULL if URI param is not found.
+     *
      * @param string $param The URI parameter to return.
-     * 
+     *
      * @return mixed
      */
     public function uriParams(?string $param = null)
@@ -234,10 +237,10 @@ class Request
     }
 
     /**
-     * Return a query param value or an array with query params if no argument is provided, return null if the query param is not found.
-     * 
+     * Return queryparam value or array of queryparams if no argument is provided, return NULL if not found.
+     *
      * @param string $param The query param to return.
-     * 
+     *
      * @return mixed
      */
     public function queryParams(string $param = null)
@@ -250,10 +253,10 @@ class Request
     }
 
     /**
-     * Return an input value or an array with all inputs if no argument is provided, return null if the input is not found.
-     * 
+     * Return input value or array with all inputs if no argument is provided, return NULL if input is not found.
+     *
      * @param string $param The input to return.
-     * 
+     *
      * @return mixed
      */
     public function inputs(string $param = null)
@@ -266,10 +269,10 @@ class Request
     }
 
     /**
-     * Return a file data or an array with all files if no argument is provided, return null if the file is not found.
-     * 
+     * Return file data or array with all files if no argument is provided, return NULL if file is not found.
+     *
      * @param string $param The filename to return.
-     * 
+     *
      * @return mixed
      */
     public function files(string $param = null)

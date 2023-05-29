@@ -4,21 +4,17 @@ declare(strict_types=1);
 
 namespace Jayrods\ProductInventory\Helper\Traits;
 
-/**
- * Store and retrieve JSON cached files.
- * 
- * @method public getJsonCache() Retrieve JSON cached files.
- * @method public storeJsonCache() Store JSON cached files.
- */
 trait JsonCache
 {
     /**
      * Retrieve JSON cached files.
-     * 
-     * By default, JSON cached files contains two fields: 'timestamp' who controls if the cached data is still valid to use and 'content', which contains the cached data ifself.
-     * 
+     *
+     * By default, JSON cached files contains two fields:
+     * 'timestamp' who controls if the cached data is still valid to use and
+     * 'content', which contains the cached data ifself.
+     *
      * @param string $file Cached file name.
-     * 
+     *
      * @return ?array Return NULL if the cache time expired.
      */
     public function getJsonCache(string $file): ?array
@@ -36,13 +32,15 @@ trait JsonCache
 
     /**
      * Store JSON cached files.
-     * 
-     * By default, JSON cached files contains two fields: 'timestamp' who controls if the cached data is still valid to use and 'content', which contains the cached data ifself.
-     * 
-     * @param mixed $content Content to cache.
-     * @param string $file Cached file name.
-     * 
-     * @return mixed Return INT value representing the number of inserted/modified characters if success or FALSE on failure.
+     *
+     * By default, JSON cached files contains two fields:
+     * 'timestamp' who controls if the cached data is still valid to use and
+     * 'content', which contains the cached data ifself.
+     *
+     * @param mixed  $content Content to cache.
+     * @param string $file    Cached file name.
+     *
+     * @return mixed Return INT value if success or FALSE on failure.
      */
     public function storeJsonCache($content, string $file)
     {

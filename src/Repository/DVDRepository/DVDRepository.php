@@ -10,16 +10,16 @@ interface DVDRepository
 {
     /**
      * Persist a DVD on database.
-     * 
+     *
      * @param DVD $dvd Instance of DVD.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     public function save(DVD $dvd): bool;
 
     /**
      * Retrieve all DVDs from database.
-     * 
+     *
      * @return DVD[] Array of DVD objects.
      */
     public function all(): array;

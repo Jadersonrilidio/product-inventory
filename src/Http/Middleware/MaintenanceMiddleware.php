@@ -16,10 +16,10 @@ class MaintenanceMiddleware implements Middleware
 {
     /**
      * Handle middleware execution.
-     * 
+     *
      * @param Request $request
-     * @param Closure $next The next middleware to be executed in queue.
-     * 
+     * @param Closure $next    The next middleware to be executed in queue.
+     *
      * @return bool
      */
     public function handle(Request $request, Closure $next): bool
@@ -35,14 +35,14 @@ class MaintenanceMiddleware implements Middleware
 
     /**
      * Instantiate MaintenanceController and return its response by echo.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return void
      */
     private function callMaintenanceController(Request $request): void
     {
-        $controller = new MaintenanceController(new View(),new FlashMessage());
+        $controller = new MaintenanceController(new View(), new FlashMessage());
 
         $controller->index($request)->sendResponse();
     }

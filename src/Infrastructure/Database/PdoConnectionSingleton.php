@@ -15,7 +15,7 @@ abstract class PdoConnectionSingleton
 
     /**
      * Class constructor.
-     * 
+     *
      * If a PDO connection is not set, it create a connection and set PDO attributes.
      */
     public function __construct()
@@ -28,7 +28,7 @@ abstract class PdoConnectionSingleton
 
     /**
      * Set PDO attributes according to ENVIRONMENT variable.
-     * 
+     *
      * @return void
      */
     private function setAttributes(): void
@@ -43,14 +43,14 @@ abstract class PdoConnectionSingleton
 
     /**
      * Create a PDO connection to given database.
-     * 
+     *
      * @return void
      */
     abstract protected function connect(): void;
 
     /**
      * Return PDO connection.
-     * 
+     *
      * @return PDO
      */
     public function getConnection(): PDO

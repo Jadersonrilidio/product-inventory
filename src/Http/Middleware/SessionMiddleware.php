@@ -12,10 +12,10 @@ class SessionMiddleware implements Middleware
 {
     /**
      * Handle middleware execution.
-     * 
+     *
      * @param Request $request
-     * @param Closure $next The next middleware to be executed in queue.
-     * 
+     * @param Closure $next    The next middleware to be executed in queue.
+     *
      * @return bool
      */
     public function handle(Request $request, Closure $next): bool

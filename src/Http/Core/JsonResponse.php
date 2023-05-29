@@ -13,14 +13,18 @@ class JsonResponse extends Response
 
     /**
      * Class constructor.
-     * 
-     * @param mixed $content
-     * @param int $httpCode
+     *
+     * @param mixed  $content
+     * @param int    $httpCode
      * @param string $contentType
-     * @param array $headers
+     * @param array  $headers
      */
-    public function __construct($content, int $httpCode = 200, string $contentType = 'application/json', array $headers = [])
-    {
+    public function __construct(
+        $content,
+        int $httpCode = 200,
+        string $contentType = 'application/json',
+        array $headers = []
+    ) {
         parent::__construct(json_encode($content), $httpCode, $contentType, $headers);
 
         $this->addCORSPolicyToHeaders();
@@ -28,9 +32,9 @@ class JsonResponse extends Response
 
     /**
      * Set default CORS Policy headers to be added on every API route.
-     * 
+     *
      * @param array $corsPolicy
-     * 
+     *
      * @return void
      */
     public static function setApiCORSPolicy(array $corsPolicy): void
@@ -40,7 +44,7 @@ class JsonResponse extends Response
 
     /**
      * Add CORS-Policy to headers.
-     * 
+     *
      * @return void
      */
     protected function addCORSPolicyToHeaders(): void

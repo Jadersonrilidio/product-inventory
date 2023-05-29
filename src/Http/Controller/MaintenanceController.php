@@ -12,9 +12,9 @@ class MaintenanceController extends Controller
 {
     /**
      * Executed whenever app is under maintenance.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return Response
      */
     public function index(Request $request): Response

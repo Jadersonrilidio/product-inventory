@@ -23,8 +23,8 @@ abstract class AbstractProductValidator implements Validator
 
     /**
      * Class constructor.
-     * 
-     * @param FlashMessage $flashMsg
+     *
+     * @param FlashMessage      $flashMsg
      * @param ProductRepository $productRepository
      */
     public function __construct(FlashMessage $flashMsg, ProductRepository $productRepository)
@@ -35,27 +35,30 @@ abstract class AbstractProductValidator implements Validator
 
     /**
      * Execute validation of input data and uploaded files.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return bool Return TRUE if inputs are valid, FALSE otherwise.
      */
     public function validate(Request $request): bool
     {
-        return $this->check(array(
-            'sku' => $this->validateSku($request->inputs('sku')),
-            'name' => $this->validateName($request->inputs('name')),
-            'price' => $this->validatePrice($request->inputs('price')),
-            'type' => $this->validateType($request->inputs('type'))
-        ), $request);
+        return $this->check(
+            array(
+                'sku' => $this->validateSku($request->inputs('sku')),
+                'name' => $this->validateName($request->inputs('name')),
+                'price' => $this->validatePrice($request->inputs('price')),
+                'type' => $this->validateType($request->inputs('type'))
+            ),
+            $request
+        );
     }
 
     /**
      * Check the validation array.
-     * 
-     * @param array $validation
+     *
+     * @param array   $validation
      * @param Request $request
-     * 
+     *
      * @return bool Return TRUE if all validation passes, FALSE otherwise.
      */
     protected function check(array $validation, Request $request): bool
@@ -71,27 +74,27 @@ abstract class AbstractProductValidator implements Validator
 
     /**
      * Actions to be executed on validation success.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return bool Return TRUE.
      */
     abstract protected function onSuccess(Request $request): bool;
 
     /**
      * Actions to be executed on validation fail.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return bool Return FALSE.
      */
     abstract protected function onFail(Request $request): bool;
 
     /**
      * SKU input validation.
-     * 
+     *
      * @param string $sku
-     * 
+     *
      * @return bool TRUE on success or FALSE if validation fails.
      */
     public function validateSku(string $sku): bool
@@ -99,16 +102,20 @@ abstract class AbstractProductValidator implements Validator
         $result = true;
 
         if (!preg_match('/^[a-zA-Z0-9]{1,32}$/', $sku)) {
-            $this->flashMsg->add(array(
-                'sku-error' => "Invalid SKU format (must have at least 8 to 32 alphanumeric characters)."
-            ));
+            $this->flashMsg->add(
+                array(
+                    'sku-error' => "Invalid SKU format (must have at least 8 to 32 alphanumeric characters)."
+                )
+            );
             $result = false;
         }
 
         if ($this->productRepository->skuExists($sku)) {
-            $this->flashMsg->add(array(
-                'sku-error' => "SKU already exists."
-            ));
+            $this->flashMsg->add(
+                array(
+                    'sku-error' => "SKU already exists."
+                )
+            );
             $result = false;
         }
 
@@ -117,9 +124,9 @@ abstract class AbstractProductValidator implements Validator
 
     /**
      * Name input validation.
-     * 
+     *
      * @param string $name
-     * 
+     *
      * @return bool TRUE on success or FALSE if validation fails.
      */
     public function validateName(string $name): bool
@@ -127,16 +134,20 @@ abstract class AbstractProductValidator implements Validator
         $result = true;
 
         if (!preg_match('/^[a-zA-Z\s0-9]+$/', $name)) {
-            $this->flashMsg->add(array(
-                'name-error' => "Invalid name format (must contain only alphanumeric characters)."
-            ));
+            $this->flashMsg->add(
+                array(
+                    'name-error' => "Invalid name format (must contain only alphanumeric characters)."
+                )
+            );
             $result = false;
         }
 
         if (strlen($name) > 128) {
-            $this->flashMsg->add(array(
-                'name-error' => "Name must have no more than 128 characters."
-            ));
+            $this->flashMsg->add(
+                array(
+                    'name-error' => "Name must have no more than 128 characters."
+                )
+            );
             $result = false;
         }
 
@@ -145,17 +156,19 @@ abstract class AbstractProductValidator implements Validator
 
     /**
      * Price input validation.
-     * 
+     *
      * @param string $price
-     * 
+     *
      * @return bool TRUE on success or FALSE if validation fails.
      */
     public function validatePrice(string $price): bool
     {
         if (!is_numeric($price)) {
-            $this->flashMsg->add(array(
-                'price-error' => "Invalid price format (must be numeric integer)."
-            ));
+            $this->flashMsg->add(
+                array(
+                    'price-error' => "Invalid price format (must be numeric integer)."
+                )
+            );
             return false;
         }
 
@@ -164,17 +177,19 @@ abstract class AbstractProductValidator implements Validator
 
     /**
      * Type input validation.
-     * 
+     *
      * @param string $type
-     * 
+     *
      * @return bool TRUE on success or FALSE if validation fails.
      */
     public function validateType(string $type): bool
     {
         if (!in_array($type, $this->productRepository->getEnumTypes(), true)) {
-            $this->flashMsg->add(array(
-                'type-error' => "Invalid product type."
-            ));
+            $this->flashMsg->add(
+                array(
+                    'type-error' => "Invalid product type."
+                )
+            );
             return false;
         }
 

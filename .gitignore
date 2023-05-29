@@ -1,3 +1,4 @@
+.phan
 vendor
 .env
 composer.lock

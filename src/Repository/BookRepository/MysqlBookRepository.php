@@ -13,9 +13,9 @@ class MysqlBookRepository extends Repository implements BookRepository
 {
     /**
      * Persist a book on database.
-     * 
+     *
      * @param Book $book Instance of Book.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     public function save(Book $book): bool
@@ -25,9 +25,9 @@ class MysqlBookRepository extends Repository implements BookRepository
 
     /**
      * Persist a new book on database.
-     * 
+     *
      * @param Book $book Instance of Book.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     private function create(Book $book): bool
@@ -47,7 +47,7 @@ class MysqlBookRepository extends Repository implements BookRepository
 
     /**
      * Retrieve all books from database.
-     * 
+     *
      * @return Book[] Array of Book objects.
      */
     public function all(): array
@@ -59,8 +59,11 @@ class MysqlBookRepository extends Repository implements BookRepository
 
         $stmt = $this->conn->query($query);
 
-        return $stmt->fetchAll(PDO::FETCH_FUNC, function ($sku, $name, $price, $weight) {
-            return new Book($sku, $name, $price, $weight);
-        });
+        return $stmt->fetchAll(
+            PDO::FETCH_FUNC,
+            function ($sku, $name, $price, $weight) {
+                return new Book($sku, $name, $price, $weight);
+            }
+        );
     }
 }

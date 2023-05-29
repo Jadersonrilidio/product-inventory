@@ -21,8 +21,8 @@ abstract class Controller
 
     /**
      * Class constructor.
-     * 
-     * @param View $view Instance of View.
+     *
+     * @param View         $view     Instance of View.
      * @param FlashMessage $flashMsg Instance of FlashMessage.
      */
     public function __construct(View $view, FlashMessage $flashMsg)

@@ -13,9 +13,9 @@ class MysqlDVDRepository extends Repository implements DVDRepository
 {
     /**
      * Persist a DVD on database.
-     * 
+     *
      * @param DVD $dvd Instance of DVD.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     public function save(DVD $dvd): bool
@@ -25,9 +25,9 @@ class MysqlDVDRepository extends Repository implements DVDRepository
 
     /**
      * Persist a new DVD on database.
-     * 
+     *
      * @param DVD $dvd Instance of DVD.
-     * 
+     *
      * @return bool TRUE on success or FALSE on failure.
      */
     private function create(DVD $dvd): bool
@@ -47,7 +47,7 @@ class MysqlDVDRepository extends Repository implements DVDRepository
 
     /**
      * Retrieve all DVDs from database.
-     * 
+     *
      * @return DVD[] Array of DVD objects.
      */
     public function all(): array
@@ -59,8 +59,11 @@ class MysqlDVDRepository extends Repository implements DVDRepository
 
         $stmt = $this->conn->query($query);
 
-        return $stmt->fetchAll(PDO::FETCH_FUNC, function ($sku, $name, $price, $size) {
-            return new DVD($sku, $name, $price, $size);
-        });
+        return $stmt->fetchAll(
+            PDO::FETCH_FUNC,
+            function ($sku, $name, $price, $size) {
+                return new DVD($sku, $name, $price, $size);
+            }
+        );
     }
 }

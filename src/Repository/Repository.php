@@ -15,7 +15,7 @@ abstract class Repository
 
     /**
      * Class constructor.
-     * 
+     *
      * @param PDO $conn PDO connection instance.
      */
     public function __construct(PDO $conn)

@@ -10,9 +10,9 @@ class MysqlRepositoryFactory
 {
     /**
      * Instantiate a MysqlRepository according to given entityName.
-     * 
+     *
      * @param string $entityName Name of the Entity of interest.
-     * @param PDO $conn PDO connection with database.
+     * @param PDO    $conn       PDO connection with database.
      */
     public function create(string $entityName, PDO $conn)
     {

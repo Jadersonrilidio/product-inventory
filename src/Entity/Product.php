@@ -30,10 +30,10 @@ abstract class Product implements JsonSerializable
 
     /**
      * Class constructor.
-     * 
+     *
      * @param string $sku
      * @param string $name
-     * @param int $price
+     * @param int    $price
      */
     public function __construct(string $sku, string $name, int $price)
     {
@@ -44,7 +44,7 @@ abstract class Product implements JsonSerializable
 
     /**
      * Return product SKU (Stock Keeping Unit).
-     * 
+     *
      * @return string
      */
     public function sku(): string
@@ -54,7 +54,7 @@ abstract class Product implements JsonSerializable
 
     /**
      * Return product name.
-     * 
+     *
      * @return string
      */
     public function name(): string
@@ -64,7 +64,7 @@ abstract class Product implements JsonSerializable
 
     /**
      * Return product price (in cents of $).
-     * 
+     *
      * @return int
      */
     public function price(): int
@@ -74,9 +74,9 @@ abstract class Product implements JsonSerializable
 
     /**
      * Return product type.
-     * 
+     *
      * Enum representation on database with values: DVD, Book, Furniture.
-     * 
+     *
      * @return string
      */
     public function type(): string
@@ -86,7 +86,7 @@ abstract class Product implements JsonSerializable
 
     /**
      * Return formated product price (Ex: 120 $).
-     * 
+     *
      * @return string
      */
     public function formatedPrice(): string
@@ -96,14 +96,14 @@ abstract class Product implements JsonSerializable
 
     /**
      * Return formated specific attributes.
-     * 
+     *
      * @return string
      */
     abstract public function formatedSpecificAttributes(): string;
 
     /**
      * Specify data which should be serialized to JSON.
-     * 
+     *
      * @return mixed data which can be serialized by json_encode, which is a value of any type other than a resource.
      */
     public function jsonSerialize()
@@ -117,16 +117,17 @@ abstract class Product implements JsonSerializable
     }
 
     /**
-     *  Is run when writing data to inaccessible (protected or private) or non-existing properties.
-     * 
+     * Is run when writing data to inaccessible (protected or private) or non-existing properties.
+     *
      * @param string $name
-     * @param mixed $value
-     * 
+     * @param mixed  $value
+     *
      * @return void
      */
     public function __set(string $name, $value): void
     {
-        // The __set() magic method would be usefull in case of applying the PDO::FETCH_CLASS mode during PDOStatement::fetchAll() method.
+        // The __set() magic method would be usefull in case of applying
+        // the PDO::FETCH_CLASS mode during PDOStatement::fetchAll() method.
 
         // if (property_exists($this, $name) and !isset($this->$name)) {
         //     $this->$name = $value;

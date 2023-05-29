@@ -12,7 +12,7 @@ class MysqlPdoConnection extends PdoConnectionSingleton
 {
     /**
      * Create a MySQL PDO connection.
-     * 
+     *
      * @return void
      */
     protected function connect(): void
@@ -27,7 +27,7 @@ class MysqlPdoConnection extends PdoConnectionSingleton
 
     /**
      * Mount DSN string according to ENVIRONMENT variables.
-     * 
+     *
      * @return string Mounted DSN.
      */
     private function mountDsn(): string

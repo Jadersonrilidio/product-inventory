@@ -41,14 +41,18 @@ class Router
 
     /**
      * Class constructor.
-     * 
-     * @param Request $request Instance of Request.
-     * @param MiddlewareQueue $middlewareQueue Instance of MiddlewareQueue.
-     * @param ContainerInterface $diContainer Instance of Container for Dependency Injection.
-     * @param array $routes Mapping of route to its parameters in the form "route" => "[controller, method, middlewares]".
+     *
+     * @param Request            $request         Instance of Request.
+     * @param MiddlewareQueue    $middlewareQueue Instance of MiddlewareQueue.
+     * @param ContainerInterface $diContainer     Instance of Container for Dependency Injection.
+     * @param array              $routes          Map of "route" => "[controller, method, middlewares]"
      */
-    public function __construct(Request $request, MiddlewareQueue $middlewareQueue, ContainerInterface $diContainer, array $routes)
-    {
+    public function __construct(
+        Request $request,
+        MiddlewareQueue $middlewareQueue,
+        ContainerInterface $diContainer,
+        array $routes
+    ) {
         $this->request = $request;
         $this->middlewareQueue = $middlewareQueue;
         $this->diContainer = $diContainer;
@@ -57,7 +61,7 @@ class Router
 
     /**
      * Handle the request, call the appropriate controller/method and return a Response.
-     * 
+     *
      * @return Response
      */
     public function handleRequest(): Response
@@ -77,7 +81,7 @@ class Router
 
     /**
      * Return the requested route parameters.
-     * 
+     *
      * @return array The route param array in the form ['string:controller', 'string:method', 'array:middlewares'].
      */
     private function routeParams(): array
@@ -106,7 +110,7 @@ class Router
 
     /**
      * Create a map in the form "route" => "regex".
-     * 
+     *
      * @return array
      */
     private function createRouteRegexArray(): array
@@ -124,9 +128,12 @@ class Router
         $regexArray = str_replace('|', '\|', $regexArray);
 
         // wrap regex expression with start and end signs
-        $regexArray = array_map(function ($route) {
-            return '/^' . $route . '$/';
-        }, $regexArray);
+        $regexArray = array_map(
+            function ($route) {
+                return '/^' . $route . '$/';
+            },
+            $regexArray
+        );
 
         $this->storeJsonCache($regexArray, self::ROUTE_REGEX_CACHE_NAME);
 
@@ -135,9 +142,9 @@ class Router
 
     /**
      * Call the middlewares queue to execute.
-     * 
+     *
      * @param array $middlewares The route specific middlewares to be added to middleware queue.
-     * 
+     *
      * @return bool
      */
     private function executeMiddlewaresQueue(array $middlewares): bool
@@ -149,9 +156,9 @@ class Router
 
     /**
      * Redirect to the specified path. If empty path if provided, redirect to "/" route.
-     * 
+     *
      * @param string $path URI path to redirect.
-     * 
+     *
      * @return void
      */
     public static function redirect(string $path = ''): void
