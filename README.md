@@ -60,7 +60,7 @@ As could be seen above in the `index.php`, the `Router` receives a:
 - queue of middlewares represented by `MiddlewareQueue` instance;
 - Map of routes => parameters, found at `config/routes.php` in the form 'route' => ['Controller class', 'method', 'required middlewares'].
 
-The `Router::handleRequest()` method uses the `httpMethod` and `uri` properties from the `Request` to find if the route exists in the `config.routes.php` map;
+The `Router::handleRequest()` method uses the `httpMethod` and `uri` properties from the `Request` to find if the route exists in the `config/routes.php` map;
 
 if the route is not found, it returns the `fallback` route parameters, set in the `config/routes.php`, as shown bellow;
 
@@ -78,8 +78,8 @@ if found, it returns the route parameters, represented by an array of Controller
 
 With the route parameters in hand, the `Router::handleRequest()` method:
 - Execute the middlewares queue, adding the route middlewares to it;
-- Instantiate the Controller class, using a dependency injection container `$diContainer`;
-- Call the Controller method, injecting the `Request` instance into it and returning a `Response::class` object;
+- Instantiate the Controller class, using the `$diContainer` instance;
+- Call the Controller method, injecting the `Request` instance into it and returning a `Response`.
 
 Then, the `Response::sendResponse()` method is called, forwarding the response content to the client, setting the Headers, HTTP code, Content-Type, CORS Policy (and all sort of settings needed), thus completing the app lifecycle.
 
@@ -103,7 +103,7 @@ The `src` folder structure is briefly explained in this JSON schema bellow:
             "Web Controllers are stored at the root of the Controller folders."
         },
         "Core": "The app Core classes are stored here.",
-        "Middlewares": "All Middleware classes and interface + MiddlewareQueue are stored here."
+        "Middleware": "All Middleware classes and interface + MiddlewareQueue are stored here."
     },
     "Infrastructure": {
         "Database": "Database Connection abstraction classes are stored here.",
@@ -124,7 +124,7 @@ The `src` folder structure is briefly explained in this JSON schema bellow:
 
 ## Adding a new product type on backend
 
-**1 -** Create a new product-type Entity on the path `src/Entity` which extends the `Jayrods\ProductInventory\Entity\Product::class`;
+**1 -** Create a new product-type Entity on the path `src/Entity` which extends the `Jayrods\ProductInventory\Entity\Product::class`:
 
 ```php
 <?php
@@ -139,7 +139,7 @@ class NewProductType extends Product
 }
 ```
 
-**2 -** Create a `ProductTypeRepository` folder on the path `src/Repository`, the interface `ProductTypeRepository::class` and class `MysqlProductTypeRepository::class` within it, following the models of the other product-derived repositories;
+**2 -** Create a `ProductTypeRepository` folder on the path `src/Repository`, the interface `ProductTypeRepository::class` and class `MysqlProductTypeRepository::class` within it:
 
 ```php
 <?php
@@ -172,7 +172,7 @@ class MysqlNewProductTypeRepository extends Repository implements NewProductType
 }
 ```
 
-**3 -** Create a `ProductTypeValidator::class` for specific attributes validation, again following the models of the other product-derived validators;
+**3 -** Create a `ProductTypeValidator::class` for specific attributes validation:
 
 ```php
 <?php
@@ -188,7 +188,7 @@ class NewProductTypeValidator extends AbstractProductValidator
 }
 ```
 
-**4 -** Rewrite the `MysqlProductRepository::all()` method's SQL query, properly replacing the `{{placeholders}}`: 
+**4 -** Rewrite the `MysqlProductRepository::all()` method's SQL query, properly replacing the `{{placeholders}}`:
 
 ```sql
 SELECT products.sku, products.name, products.price, products.type,
@@ -267,7 +267,7 @@ DB_USER=****
 DB_PASSWORD=****
 ```
 
-**NOTE** `DB_NAME` should not be set until running the next step.
+**NOTE:** `DB_NAME` should not be set until running the next step.
 
 **4 -** Create database and populate it using the following command:
 
@@ -283,7 +283,7 @@ It runs the schema and tables creation queries, create insertion procedures and 
 DB_NAME=product_inventory_db
 ```
 
-**6 -** Now the application should be ready to serve.
+**6 -** The application should be ready to serve.
 
 To run the application in a local environment from PHP default server, run the command:
 
@@ -301,11 +301,11 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule (.*) ./public/index.php/$1 [QSA,L]
 ```
 
-Also could run commands to list and insert products into database by the commands:
+You could also list and insert products into database from the terminal using the commands:
 
 ```sh
-$ composer db:get
-$ composer db:make
+$ composer db:get [args]
+$ composer db:make [args]
 ```
 
 ## Development Details
@@ -349,4 +349,4 @@ public function all(): array
 }
 ```
 
-Provided all ProductType repositories have the `all()` method implemented.
+Provided that all ProductType repositories have the `all()` method implemented.
