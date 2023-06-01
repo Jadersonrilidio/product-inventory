@@ -18,7 +18,7 @@ There is also available an alternative webapp built entirely from the backend. I
 
 PHP 7.4 and MySQL 5.7
 
-## How the app works is a nutshell
+## How the app works in a nutshell
 
 The application was built as a classic MVC model;
 
